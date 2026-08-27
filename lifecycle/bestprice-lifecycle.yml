@@ -1,0 +1,56 @@
+generated: '2026-08-27'
+method: searched
+source: https://github.com/TheBestCo/bestprice-mcp/blob/main/SECURITY.md (supported-version policy),
+  the GitHub Releases API for TheBestCo/bestprice-mcp, live initialize/server-card responses from
+  https://mcp.bestprice.gr/mcp on 2026-08-27, and https://www.bestprice.gr/mcp.
+docs: https://www.bestprice.gr/mcp
+current_version: 1.5.1
+versioning:
+  scheme: semver, in-band
+  where_published:
+  - initialize -> result.serverInfo.version
+  - https://mcp.bestprice.gr/mcp/server-card -> version
+  - https://mcp.bestprice.gr/server.json -> version
+  - https://www.bestprice.gr/.well-known/ard.json -> entries[0].version
+  payload_contract_version: schema_version 2.0 on every tool result
+  url_versioning: false
+support_policy:
+  statement: >-
+    "The hosted service at https://mcp.bestprice.gr/mcp is continuously updated. Only its current
+    production version is supported."
+  source: https://github.com/TheBestCo/bestprice-mcp/blob/main/SECURITY.md
+  implication: >-
+    A single rolling version with no maintained N-1. There is no pinning mechanism for a consumer, so
+    a client's only version signal is the in-band serverInfo.version and schema_version it reads back.
+deprecation_policy:
+  published: false
+  sunset_headers: false
+  deprecation_headers: false
+  deprecated_operations: []
+  note: >-
+    No deprecation policy, no RFC 8594 Sunset/Deprecation headers, no advance-notice window and no
+    changelog of breaking changes for the hosted MCP service. Given the stated rolling-release model
+    this is the clearest lifecycle gap on the profile: a consumer has no contractual notice period.
+sla:
+  published: false
+status_page:
+  published: false
+  probed:
+  - url: https://status.bestprice.gr/
+    status: <no response - host does not resolve>
+  note: No status page, uptime history or incident feed found on any BestPrice property or in the
+    GitHub repository.
+announced_end_dates:
+- surface: WebMCP browser-tab tools
+  date: '2026-11-17'
+  kind: chrome-origin-trial-expiry
+  source: https://www.bestprice.gr/mcp
+  note: >-
+    The provider states participation in the Chrome trial runs to 17 November 2026 and that support
+    may change. This is the only dated end-of-life anywhere on the profile, and it is honestly
+    disclosed rather than buried — but it applies to the experimental in-page surface, not to the
+    remote MCP endpoint.
+releases:
+  scope: client extension repository only (not the hosted service)
+  repository: https://github.com/TheBestCo/bestprice-mcp
+  see: ../changelog/bestprice-changelog.yml

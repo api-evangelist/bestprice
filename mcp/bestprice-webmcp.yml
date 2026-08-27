@@ -1,0 +1,53 @@
+generated: '2026-08-27'
+method: probed
+source: https://www.bestprice.gr/.well-known/webmcp.json (HTTP 200, application/json, fetched
+  2026-08-27), corroborated by https://github.com/TheBestCo/bestprice-mcp/tree/main/webmcp and the
+  WebMCP section of https://www.bestprice.gr/mcp.
+name: BestPrice WebMCP (browser-tab tools)
+status: experimental
+note: >-
+  This is a SECOND and distinct agent surface, not another copy of the remote MCP server. WebMCP
+  tools are registered by the BestPrice page itself into a compatible Chrome tab, so they only exist
+  while the shopper has that tab open — an assistant cannot reach them headlessly the way it reaches
+  https://mcp.bestprice.gr/mcp. The provider states the Chrome origin trial runs to 17 November 2026
+  and that support may change.
+deployment:
+  mode: none
+  transport: in-page (WebMCP)
+  auth: none
+  verified: probed
+  note: Not an MCP endpoint an agent can POST to; recorded here so the two surfaces are not conflated.
+manifest:
+  manifest_version: '0.1'
+  origin: https://www.bestprice.gr
+  updated_at: '2026-08-27T00:00:00Z'
+  file: bestprice-webmcp.json
+  path: ../well-known/bestprice-webmcp.json
+tool_count: 13
+tool_version: 1.3.0
+all_tools_read_or_navigate_only: true
+all_tools_risk_level: low
+tools:
+- {name: search_bestprice, category: navigation, risk_level: low, requires_user_confirm: false}
+- {name: get_visible_products, category: read, risk_level: low, requires_user_confirm: false}
+- {name: open_visible_product, category: navigation, risk_level: low, requires_user_confirm: false}
+- {name: get_listing_filters, category: read, risk_level: low, requires_user_confirm: false}
+- {name: apply_listing_filter, category: page-state, risk_level: low, requires_user_confirm: false}
+- {name: clear_listing_filters, category: page-state, risk_level: low, requires_user_confirm: false}
+- {name: get_listing_sort_options, category: read, risk_level: low, requires_user_confirm: false}
+- {name: apply_listing_sort, category: page-state, risk_level: low, requires_user_confirm: false}
+- {name: get_page_product, category: read, risk_level: low, requires_user_confirm: false}
+- {name: compare_page_offers, category: read, risk_level: low, requires_user_confirm: false}
+- {name: get_product_specifications, category: read, risk_level: low, requires_user_confirm: false}
+- {name: summarize_price_history, category: read, risk_level: low, requires_user_confirm: false}
+- {name: show_price_history, category: page-state, risk_level: low, requires_user_confirm: false}
+source_code:
+  url: https://github.com/TheBestCo/bestprice-mcp/tree/main/webmcp
+  license: Apache-2.0
+  note: Provider states the WebMCP runtime, deterministic evaluator, tests and demo are published there.
+x-evidence:
+  fetched: '2026-08-27'
+  url: https://www.bestprice.gr/.well-known/webmcp.json
+  http_status: 200
+  content_type: application/json; charset=utf-8
+  bytes: 18369

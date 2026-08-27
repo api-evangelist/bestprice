@@ -1,0 +1,22 @@
+generated: '2026-08-27'
+method: searched
+source: https://www.bestprice.gr/mcp — the connection guide and FAQ state the endpoint is public,
+  requires no BestPrice account and no BestPrice API key; corroborated by
+  https://github.com/TheBestCo/bestprice-mcp README ("The public service is read-only and does not
+  require a BestPrice account or API key") and by a live anonymous call on 2026-08-27.
+docs: https://www.bestprice.gr/mcp
+plan_count: 0
+model: free-public-no-account
+plans: []
+note: >-
+  BestPrice publishes no tiers, quotas or prices for its agent surface, because it does not sell one:
+  the MCP endpoint is open, anonymous and free, with no signup, no key issuance and no metered plan.
+  This is a plan_count of 0 for the honest reason — nothing is being sold — and not because a pricing
+  page was gated or unreadable. BestPrice's commercial relationships are on the other side of the
+  marketplace (merchant listings, advertising, brand programs), and none of those pages price API or
+  MCP access. No machine-readable pricing or catalog endpoint is published.
+x-evidence:
+- url: https://www.bestprice.gr/mcp
+  status: 200
+- url: https://mcp.bestprice.gr/mcp
+  status: 200

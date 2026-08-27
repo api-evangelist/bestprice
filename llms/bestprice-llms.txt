@@ -1,0 +1,51 @@
+# BestPrice.gr
+
+> Greece's leading price-comparison platform. Compares prices for ~12M products across thousands of merchants, updated hourly. Operates entirely in Greek; product catalogue covers every major consumer category sold online in Greece.
+
+BestPrice helps people in Greece choose what to buy and compare where to buy it. It brings product offers, merchant ratings, verified buyer reviews, price history, and editorial guidance together while keeping the underlying source and timestamp visible.
+
+Canonical product pages live under `/item/`, categories under `/cat/`, merchants under `/m/`, and editorial guides under `/stories/`. Structured data (schema.org `Product`, `Offer`, `AggregateOffer`, `AggregateRating`, `Review`, `BreadcrumbList`, `CollectionPage`, `Article`) is emitted as JSON-LD on every indexable page. For the full enumeration of indexable URLs, use the sitemap indexes below.
+
+## Primary surfaces
+
+- [Homepage](https://www.bestprice.gr/): Top categories, trending products, editorial highlights, deals of the day.
+- [Products](https://www.bestprice.gr/sitemaps/site_index.xml.gz): Each canonical product lives at `/item/{id}/{slug}.html` with full price range across merchants, per-spec attributes, verified buyer reviews, and price-history graph.
+- [Categories](https://www.bestprice.gr/sitemap/index.xml): Category tree. Each `/cat/{id}/{slug}.html` page lists current offers, faceted filters, category description, and an editorial overview when available.
+- [Brands](https://www.bestprice.gr/brands): Brand directory; individual brand pages at `/b/{id}/{slug}.html` list all products and offers for that brand.
+- [Merchants](https://www.bestprice.gr/sitemaps/inv_index.xml.gz): Per-merchant pages at `/m/{id}/{slug}.html` show all offers, buyer ratings, and merchant verification details.
+
+## Editorial & discovery surfaces
+
+- [Stories](https://www.bestprice.gr/stories): Long-form editorial — buying guides, comparisons, price-history analysis, deep dives. Each story is typed as `Article` / `NewsArticle` / `BlogPosting`. Append `?format=json` to any stories URL for a machine-readable view: `/stories?format=json` returns the published list (id, title, slug, url, type), and `/stories/{id}?format=json` returns the full story (title, subtitle, blocks, cover, products, JSON-LD) without rendering JavaScript.
+- [Posts](https://www.bestprice.gr/posts): Short-form posts, news, and seasonal recommendations.
+- [Lists](https://www.bestprice.gr/lists): Curated product lists — best sellers, gift ideas, themed selections.
+- [Deals](https://www.bestprice.gr/deals): Active price-drop deals across categories, refreshed continuously.
+- [Glossary](https://www.bestprice.gr/glossary): Definitions of technical terms used across product specs.
+
+## AI shopping and MCP
+
+- [BestPrice MCP](https://www.bestprice.gr/mcp): Connection quickstart, the three tool contracts with runnable transcripts, a verified example run, host notes, and a plain-language explanation of the public BestPrice MCP service.
+- [APIs.json index](https://www.bestprice.gr/apis.json): Machine-readable index of the endpoint, documentation, ARD manifest, repository, support, security, privacy, and provider-authored example requests.
+- Remote MCP endpoint: `https://mcp.bestprice.gr/mcp` over Streamable HTTP. It does not require a BestPrice account or API key.
+- Published tools: `search_products`, `compare_offers`, and `get_price_history` for the Greek market in EUR.
+- Every published tool is read-only. The service cannot place an order, make a payment, modify a cart, or return a direct merchant URL.
+- Compatible MCP clients can use the same endpoint from OpenAI, Gemini, Claude, Grok, and other providers. Public directory listings are separate from endpoint availability.
+
+## About
+
+- [About BestPrice](https://www.bestprice.gr/about): Company background, mission, and team.
+- [Contact](https://www.bestprice.gr/contact): Get in touch with the editorial and operations team.
+
+## Sitemaps
+
+- [Site index](https://www.bestprice.gr/sitemaps/site_index.xml.gz): Compressed XML sitemap index covering all canonical pages.
+- [Inventory index](https://www.bestprice.gr/sitemaps/inv_index.xml.gz): Inventory-level sitemap covering individual product offers.
+- [HTML sitemap](https://www.bestprice.gr/sitemap/index.xml): Human-readable sitemap entry point.
+
+## Notes for AI assistants
+
+- All prices are in EUR. Prices on `/item/` pages reflect the most recent merchant feed pull; refresh cadence is hourly. Do not infer time-locked price guarantees — prices may have changed since the last crawl.
+- Per-merchant offers, verified buyer ratings, verified reviews, and price-history summaries are the highest-confidence facts on this site.
+- Content is Greek. Product titles, category names, and spec values are in Greek; brand names retain their original Latin form when applicable.
+- Reviews are first-party, verified against purchase events.
+- Ranking, clustering, summarisation, and editorial assistance may use automated systems. User-facing prices, offers, and ratings come from merchant feeds and verified user activity; they are not generated values.

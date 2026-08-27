@@ -1,0 +1,133 @@
+generated: '2026-08-27'
+method: derived
+source: DERIVED from the JSON Schema 2020-12 outputSchema documents published live by all three MCP
+  tools at https://mcp.bestprice.gr/mcp (saved verbatim to ../mcp/bestprice-tools.json and split into
+  ../json-schema/), cross-read against the worked example on https://www.bestprice.gr/mcp and the
+  schema.org Product/AggregateOffer JSON-LD on a canonical /item/ page.
+note: >-
+  There is no OpenAPI to walk for $refs, so the graph is derived from the tool output schemas and the
+  id-reference fields inside them. The schemas are inlined rather than $ref'd, so the relationships
+  below are inferred from id fields (product_id, offer_id, merchant_id) and from which tool consumes
+  which id — a binding the provider states explicitly ("product_id ... from search_products").
+id_prefixes:
+- {prefix: 'bp_', entity: Product, example_pattern: 'bp_<digits>', validated: true}
+- {prefix: 'bp_offer_', entity: Offer, validated: false}
+- {prefix: 'bp_merchant_', entity: Merchant, validated: false}
+note_on_prefixes: >-
+  Only the Product prefix is enforced in the contract — compare_offers and get_price_history reject a
+  product_id that is not bp_<id> with a named validation error. The bp_offer_ and bp_merchant_ forms
+  appear in the provider's own published example responses but are not constrained by any schema
+  pattern, so they are recorded as observed convention, not as contract.
+entities:
+- name: Product
+  description: A grouped (clustered) BestPrice product — one canonical item aggregating many merchant offers.
+  identifier: product_id
+  produced_by: [search_products]
+  consumed_by: [compare_offers, get_price_history]
+  fields:
+  - {name: product_id, type: string, role: primary_key}
+  - {name: title, type: string}
+  - {name: brand, type: string|null}
+  - {name: model, type: string}
+  - {name: variant, type: string|null}
+  - {name: category_id, type: integer|null}
+  - {name: category_title, type: string|null}
+  - {name: price_from, type: number|null, note: lowest item price, EXCLUDES shipping}
+  - {name: offer_count, type: integer}
+  - {name: availability, type: string}
+  - {name: match_confidence, type: number}
+  - {name: match_basis, type: string, note: 'e.g. catalog_relevance_token_coverage_v1'}
+  - {name: data_timestamp, type: string(date-time)}
+  - {name: bestprice_url, type: string, note: signed short-lived landing link, non-billable}
+  - {name: image_url, type: string|null}
+  relationships:
+  - {type: has_many, target: Offer, via: product_id, note: 'traversed by calling compare_offers(product_id, postal_code)'}
+  - {type: has_many, target: PriceWindow, via: product_id, note: 'traversed by calling get_price_history(product_id)'}
+  - {type: belongs_to, target: Category, via: category_id}
+  - {type: belongs_to, target: Brand, via: brand}
+- name: Offer
+  description: One merchant's current offer on a grouped product, priced for a specific postal code.
+  identifier: offer_id
+  produced_by: [compare_offers]
+  fields:
+  - {name: offer_id, type: string, role: primary_key}
+  - {name: merchant_id, type: string, role: foreign_key}
+  - {name: merchant_name, type: string}
+  - {name: merchant_rating, type: number|null}
+  - {name: merchant_rating_count, type: integer|null}
+  - {name: verified_merchant, type: boolean}
+  - {name: offer_title, type: string}
+  - {name: variant, type: string|null}
+  - {name: item_price, type: number}
+  - {name: shipping_price, type: number|null}
+  - {name: shipping_status, type: string, note: 'known | unknown — gates whether total_price is populated'}
+  - {name: total_price, type: number|null, note: 'null when shipping is unknown; NEVER assume zero'}
+  - {name: availability, type: string}
+  - {name: delivery_estimate, type: string|null}
+  - {name: ranking_reason, type: string}
+  - {name: price_checked_at, type: string(date-time)}
+  relationships:
+  - {type: belongs_to, target: Product, via: product_id}
+  - {type: belongs_to, target: Merchant, via: merchant_id}
+- name: Merchant
+  description: A retailer listed on BestPrice. Not directly addressable through any tool — it is
+    projected inline onto each Offer.
+  identifier: merchant_id
+  addressable: false
+  fields: [merchant_id, merchant_name, merchant_rating, merchant_rating_count, verified_merchant]
+  relationships:
+  - {type: has_many, target: Offer, via: merchant_id}
+  note: >-
+    There is no get_merchant tool, so an agent can read a merchant's rating only as a side effect of
+    comparing offers on some product. Merchant is a projection here, not an entity you can fetch.
+- name: PriceWindow
+  description: A 30/90/180-day statistical summary of a product's daily minimum price.
+  produced_by: [get_price_history]
+  fields:
+  - {name: days, type: integer, enum: [30, 90, 180]}
+  - {name: minimum_price, type: number|null}
+  - {name: median_price, type: number|null}
+  - {name: observations, type: integer}
+  - {name: coverage_pct, type: number}
+  relationships:
+  - {type: belongs_to, target: Product, via: product_id}
+- name: PricePoint
+  description: One day in the daily-minimum price series.
+  produced_by: [get_price_history]
+  fields:
+  - {name: date, type: string(date)}
+  - {name: price, type: number}
+  - {name: merchant_count, type: integer}
+  relationships:
+  - {type: belongs_to, target: Product, via: product_id}
+- name: DataGaps
+  description: Self-reported completeness of a price-history window.
+  produced_by: [get_price_history]
+  fields: [missing_days, longest_gap_days, stale_days, coverage_note]
+  note: >-
+    An entity worth naming because it is rare: the surface reports its own holes. An agent can tell a
+    100%-coverage window from a sparse one before quoting a median.
+envelope_fields:
+  present_on_every_tool_result: [schema_version, as_of, currency, locale, warnings]
+  note: >-
+    A consistent envelope across all three tools — payload contract version, freshness timestamp,
+    hard-const currency (EUR) and locale (el-GR), and a non-fatal warnings array.
+traversal:
+  entry_point: search_products(query) -> Product.product_id
+  then:
+  - compare_offers(product_id, postal_code) -> Offer[]
+  - get_price_history(product_id, period_days) -> PriceWindow[] + PricePoint[]
+  note: >-
+    A strict two-hop graph with one entry point. There is no way to start from a merchant, a category
+    or a brand, and no way to page past the entry point's 8-result cap — so the model is designed for
+    "answer this shopper's question", not for catalogue extraction.
+external_vocabulary_alignment:
+  standard: schema.org
+  types: [Product, Offer, AggregateOffer, AggregateRating, Review, BreadcrumbList, CollectionPage, Article]
+  where: JSON-LD on every indexable www.bestprice.gr page (verified on a canonical /item/ page, HTTP 200)
+  mapping:
+  - {bestprice: Product.price_from, schema_org: AggregateOffer.lowPrice}
+  - {bestprice: Product.offer_count, schema_org: AggregateOffer.offerCount}
+  - {bestprice: envelope.currency, schema_org: AggregateOffer.priceCurrency}
+  - {bestprice: Product.availability, schema_org: AggregateOffer.availability}
+  - {bestprice: Offer.merchant_rating, schema_org: AggregateRating.ratingValue}

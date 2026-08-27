@@ -1,0 +1,98 @@
+generated: '2026-08-27'
+method: probed
+source: live GET of each /.well-known/ path on every host named in apis.yml (www.bestprice.gr, mcp.bestprice.gr),
+  fetched 2026-08-27 with a browser User-Agent because the site's bot protection answers a default
+  crawler UA with HTTP 403.
+note: >-
+  www.bestprice.gr serves an SPA catch-all that answers HTTP 200 with a zero-byte text/html body for
+  any unrecognised /.well-known/ path. Those rows are recorded as status 200 with served: false —
+  they are NOT documents and were not counted as hits. The six real documents all return a JSON or
+  text/plain content type with a parseable body. No agent card (A2A) exists on either host: the
+  /.well-known/agent-card.json and /.well-known/agent.json 200s on www are the empty SPA shell, and
+  mcp.bestprice.gr returns a hard 404, so no AgentCard artifact was written.
+hosts:
+- host: www.bestprice.gr
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    served: true
+    file: bestprice-security.txt
+  - path: /.well-known/ard.json
+    status: 200
+    content_type: application/json
+    served: true
+    file: bestprice-ard.json
+    note: Agentic Resource Discovery manifest; one entry pointing at the MCP server card.
+  - path: /.well-known/ai-catalog.json
+    status: 200
+    content_type: application/ai-catalog+json
+    served: true
+    file: bestprice-ai-catalog.json
+    note: Legacy AI Catalog 1.0 manifest, superseded by ard.json but still served.
+  - path: /.well-known/mcp.json
+    status: 200
+    content_type: application/json
+    served: true
+    file: bestprice-mcp-server-card-wellknown.json
+    note: Full MCP server card including the three tool schemas and an explicit authentication.required=false.
+  - path: /.well-known/webmcp.json
+    status: 200
+    content_type: application/json
+    served: true
+    file: bestprice-webmcp.json
+    note: WebMCP 0.1 manifest declaring 13 browser-tab tools.
+  - path: /.well-known/apis.json
+    status: 200
+    content_type: application/apis+json
+    served: true
+    file: bestprice-apis.json
+    note: APIs.json 0.23; identical body to https://www.bestprice.gr/apis.json.
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    served: false
+    note: Zero-byte SPA catch-all, not an RFC 9727 catalog document.
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    served: false
+    note: Zero-byte SPA catch-all.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    served: false
+    note: Zero-byte SPA catch-all.
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    content_type: text/html
+    served: false
+    note: Zero-byte SPA catch-all.
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: text/html
+    served: false
+    note: Zero-byte SPA catch-all, not an A2A agent card.
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: text/html
+    served: false
+    note: Zero-byte SPA catch-all, not an A2A agent card.
+- host: mcp.bestprice.gr
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    served: true
+    file: bestprice-security.txt
+    note: Byte-identical to the copy served from www.bestprice.gr, which is also the Canonical value.
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    served: false
+    note: The MCP endpoint is anonymous; no RFC 9728 protected-resource metadata is published.
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    served: false
+  - path: /.well-known/agent-card.json
+    status: 404
+    served: false

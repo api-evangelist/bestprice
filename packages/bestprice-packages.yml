@@ -1,0 +1,100 @@
+generated: '2026-08-27'
+method: searched
+source: registry lookups on 2026-08-27 against registry.npmjs.org (bestprice-mcp-extension,
+  bestprice-mcp, @bestprice/mcp — all HTTP 404), the official MCP Registry
+  (registry.modelcontextprotocol.io/v0/servers?search=gr.bestprice — HTTP 200), the GitHub Releases
+  API for TheBestCo/bestprice-mcp (HTTP 200), and the manifests in that repository.
+docs: https://github.com/TheBestCo/bestprice-mcp
+note: >-
+  BestPrice ships NO client SDK in any language and no library on any package registry. What it
+  distributes instead is CONNECTION metadata — extension and plugin manifests that point a host at the
+  same public endpoint. The repository's own package.json is marked "private": true and there is no
+  npm, PyPI, Maven, NuGet, Go, RubyGems, Packagist or crates.io publication under any BestPrice name.
+  That is a coherent choice for a keyless remote MCP server (there is nothing to authenticate and no
+  transport to wrap) but it means an integrator writing code against this service writes it against
+  MCP, not against a BestPrice library.
+sdk_count: 0
+packages:
+- name: gr.bestprice/mcp
+  registry: mcp-registry
+  registry_url: https://registry.modelcontextprotocol.io/v0/servers?search=gr.bestprice
+  official: true
+  kind: mcp-server-listing
+  version: 1.5.1
+  published: '2026-08-27'
+  status: active
+  is_latest: true
+  note: >-
+    Namespace-verified publication in the official MCP Registry, pushed by the repository's
+    publish-mcp-registry.yml workflow. Version line 1.2.0 -> 1.5.1, all published 2026-08-26/27, and
+    1.5.1 matches the version the live server reports in-band. This is the closest thing BestPrice
+    has to a distributed package, and it distributes a URL, not code.
+- name: bestprice-shopping (Gemini CLI extension)
+  registry: github
+  registry_url: https://github.com/TheBestCo/bestprice-mcp
+  official: true
+  kind: client-extension-manifest
+  version: 1.0.1
+  published: '2026-08-26'
+  install: gemini extensions install https://github.com/TheBestCo/bestprice-mcp
+  manifest: gemini-extension.json
+  note: Declares httpUrl https://mcp.bestprice.gr/mcp, includeTools for the three published tools,
+    a 30s timeout and an X-MCP-Client-Name header. No code, no registry package.
+- name: bestprice-shopping (Qwen Code extension)
+  registry: github
+  registry_url: https://github.com/TheBestCo/bestprice-mcp
+  official: true
+  kind: client-extension-manifest
+  version: 1.0.1
+  published: '2026-08-26'
+  install: qwen extensions install https://github.com/TheBestCo/bestprice-mcp --consent
+  manifest: qwen-extension.json
+- name: bestprice-shopping (Agent Plugins 1.0)
+  registry: github
+  registry_url: https://github.com/TheBestCo/bestprice-mcp
+  official: true
+  kind: agent-plugin-manifest
+  version: 1.0.1
+  published: '2026-08-26'
+  manifest: plugin.json + mcp.json
+  spec: https://agent-plugins.org/specification
+  note: Vendor-neutral plugin descriptor; loaded by hosts that support Agent Plugins 1.0.
+- name: bestprice-shopping (Codex plugin)
+  registry: github
+  registry_url: https://github.com/TheBestCo/bestprice-mcp
+  official: true
+  kind: client-extension-manifest
+  version: 1.0.0
+  published: '2026-08-26'
+  manifest: .codex-plugin/plugin.json
+  note: Carries interface metadata (category Shopping, capabilities [Read], privacy and terms URLs)
+    and three default prompts.
+- name: bestprice-mcp-extension
+  registry: npm
+  official: true
+  kind: not-published
+  version: null
+  published: null
+  note: >-
+    The repository's package.json declares name bestprice-mcp-extension version 1.0.1 with
+    "private": true. registry.npmjs.org/bestprice-mcp-extension returns HTTP 404 — checked, nothing
+    to record. It exists only to run the repository's own node --test suite. bestprice-mcp and
+    @bestprice/mcp are also absent from npm (both 404).
+third_party_listings:
+- name: BestPrice Shopping (Cursor community listing)
+  url: https://cursor.directory/plugins/bestprice-shopping
+  official: false
+  probe_status: 429
+  note: >-
+    Named in the provider's README as a community listing. Probed 2026-08-27 and rate-limited by
+    cursor.directory (HTTP 429), so presence was NOT confirmed by this pass and no claim is made
+    about it. It is a third-party directory in any case, not a BestPrice distribution.
+registries_checked_absent:
+- {registry: npm, result: 'no BestPrice package (3 names probed, all 404)'}
+- {registry: pypi, result: not published}
+- {registry: rubygems, result: not published}
+- {registry: crates.io, result: not published}
+- {registry: nuget, result: not published}
+- {registry: maven-central, result: not published}
+- {registry: pkg.go.dev, result: not published}
+- {registry: packagist, result: not published}

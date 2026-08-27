@@ -1,0 +1,37 @@
+generated: '2026-08-27'
+method: generated
+source: >-
+  Three skills GENERATED from the live BestPrice MCP tool contracts fetched anonymously from
+  https://mcp.bestprice.gr/mcp on 2026-08-27 (saved verbatim to ../mcp/bestprice-tools.json), plus
+  one provider-authored context file saved verbatim from
+  https://github.com/TheBestCo/bestprice-mcp. Every tool name, parameter name, bound and default
+  used in these skills is copied from the published contract; no operation or field was invented.
+api: BestPrice Shopping MCP
+endpoint: https://mcp.bestprice.gr/mcp
+auth: none
+skills:
+- name: bestprice-best-total-price
+  file: bestprice-best-total-price.md
+  method: generated
+  operations: [search_products, compare_offers]
+  summary: Delivered-cost comparison at a Greek postal code, with unknown shipping preserved as unknown.
+- name: bestprice-price-timing
+  file: bestprice-price-timing.md
+  method: generated
+  operations: [search_products, get_price_history]
+  summary: Judge today's price against the product's own 30/90/180-day daily-minimum history.
+- name: bestprice-budget-shortlist
+  file: bestprice-budget-shortlist.md
+  method: generated
+  operations: [search_products]
+  summary: Short honest shortlist under a budget, with unverified feature hints flagged as such.
+- name: bestprice-provider-agent-context
+  file: bestprice-provider-agent-context.md
+  method: searched
+  source: https://github.com/TheBestCo/bestprice-mcp/blob/main/GEMINI.md
+  summary: >-
+    The provider's OWN agent instruction file, saved verbatim. Shipped identically as GEMINI.md and
+    QWEN.md (byte-for-byte) and wired into both extension manifests via contextFileName. It is short
+    and it is the authoritative statement of how BestPrice wants agents to behave: start with
+    search_products, use only ids it returned, never describe unknown delivery as free, link to the
+    returned BestPrice URL rather than constructing a merchant URL, and say so when nothing matched.

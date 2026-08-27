@@ -1,0 +1,53 @@
+generated: '2026-08-27'
+method: searched
+source: GitHub Releases API for https://github.com/TheBestCo/bestprice-mcp, read 2026-08-27 (HTTP 200),
+  plus the in-band version fields on the hosted service.
+docs: https://github.com/TheBestCo/bestprice-mcp/releases
+scheme: semver
+note: >-
+  There are TWO version lines and they are not the same thing. The hosted MCP service reports 1.5.1
+  in-band and publishes no changelog at all — SECURITY.md says only the current production version is
+  supported. The dated releases below belong to the client-extension repository, which ships
+  connection manifests rather than server code, and its numbering (1.0.1) is independent of the
+  service's (1.5.1). A consumer watching the GitHub releases is NOT watching the service change.
+service:
+  name: BestPrice Shopping MCP
+  current_version: 1.5.1
+  changelog_published: false
+  release_notes_published: false
+  note: >-
+    No prose changelog exists for the hosted service, but the official MCP Registry does carry a
+    dated version LINE for it, recorded below. It gives a consumer version numbers and publish dates
+    and nothing else — no statement of what changed between 1.2.0 and 1.5.1, and no breaking-change
+    flag. Better than nothing, and materially less than release notes.
+registry_versions:
+  registry: https://registry.modelcontextprotocol.io
+  name: gr.bestprice/mcp
+  read: '2026-08-27'
+  status: active
+  entries:
+  - {version: 1.5.1, published: '2026-08-27', is_latest: true}
+  - {version: 1.5.0, published: '2026-08-26', is_latest: false}
+  - {version: 1.4.0, published: '2026-08-26', is_latest: false}
+  - {version: 1.3.0, published: '2026-08-26', is_latest: false}
+  - {version: 1.2.0, published: '2026-08-26', is_latest: false}
+  publisher_workflow: https://github.com/TheBestCo/bestprice-mcp/blob/main/.github/workflows/publish-mcp-registry.yml
+repository_releases:
+  current_version: 1.0.1
+  entries:
+  - version: v1.0.1
+    date: '2026-08-26'
+    name: BestPrice MCP extension 1.0.1
+    breaking: false
+    scope: client extension manifests
+  - version: v1.0.0
+    date: '2026-08-26'
+    name: BestPrice MCP extension 1.0.0
+    breaking: false
+    scope: client extension manifests
+    note: Initial public release of the extension repository.
+x-evidence:
+- url: https://api.github.com/repos/TheBestCo/bestprice-mcp/releases
+  status: 200
+- url: https://registry.modelcontextprotocol.io/v0/servers?search=gr.bestprice
+  status: 200

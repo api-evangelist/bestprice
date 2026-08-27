@@ -1,0 +1,63 @@
+generated: '2026-08-27'
+method: derived
+source: DERIVED from the outputSchema anyOf error branch published by all three tools in the live
+  tools/list response at https://mcp.bestprice.gr/mcp (saved verbatim to ../mcp/bestprice-tools.json),
+  plus two deliberate malformed tools/call requests made on 2026-08-27 to observe the real envelope.
+format: mcp-tool-result
+rfc9457: false
+note: >-
+  This is an MCP surface, so there is no HTTP status-code error catalogue to derive: every call —
+  success, validation failure and tool failure alike — returns HTTP 200 with a text/event-stream
+  JSON-RPC body. Errors surface in two distinct places and a consuming agent must handle both.
+envelopes:
+- name: protocol-level
+  shape: 'JSON-RPC 2.0 error object: {jsonrpc, id, error:{code, message}}'
+  observed: true
+  example_observed:
+    method: prompts/list
+    code: -32601
+    message: Method not found
+  note: Standard JSON-RPC codes. Used for unsupported methods.
+- name: tool-input-validation
+  shape: '{result:{content:[{type:text, text:"Input validation error: ..."}], isError:true}}'
+  observed: true
+  http_status: 200
+  note: >-
+    Returned when arguments fail the tool inputSchema. The message names each offending field and the
+    constraint it broke. isError=true is the machine-readable signal; the text is prose.
+- name: tool-domain-error
+  shape: '{schema_version, as_of, currency, locale, warnings[], error:{code, message, retryable}}'
+  observed: false
+  declared_in: tool outputSchema anyOf branch 2 (all three tools)
+  fields:
+  - {name: code, type: string, pattern: '^[A-Z][A-Z0-9_]{2,63}$', required: true}
+  - {name: message, type: string, max_length: 240, required: true}
+  - {name: retryable, type: boolean, required: true}
+  note: >-
+    The contract declares this branch but does NOT enumerate the code values, so the specific codes
+    an agent may see are unknown from the published schema. No domain error was produced during this
+    pass. `retryable` is the field to branch on — it is the only machine-readable retry signal the
+    surface offers, since there is no Retry-After header and no 429.
+observed_validation_errors:
+- tool: get_price_history
+  arguments: {product_id: 'bp_000000000 (well-formed prefix, wrong shape)'}
+  isError: true
+  message: 'Input validation error: Invalid arguments for tool get_price_history: product_id: Expected
+    a grouped BestPrice product id (bp_<id>)'
+- tool: compare_offers
+  arguments: {product_id: nope, postal_code: '1'}
+  isError: true
+  message: 'Input validation error: Invalid arguments for tool compare_offers: product_id: Expected a
+    grouped BestPrice product id (bp_<id>), postal_code: Invalid string: must match pattern /^[0-9]{5}$/u'
+partial_success:
+  mechanism: warnings[]
+  note: >-
+    Successful responses carry a warnings[] array (max 20 entries, 240 chars each) used for
+    non-fatal caveats — e.g. that price_from excludes shipping, or that duplicate merchant listings
+    were consolidated. An agent that ignores warnings[] will report prices that are technically
+    correct and practically wrong.
+null_as_signal:
+  field: total_price
+  note: >-
+    compare_offers returns total_price = null with shipping_status != "known" rather than assuming
+    zero shipping. Treating that null as 0 is the single most expensive misread of this API.

@@ -1,0 +1,191 @@
+generated: '2026-08-27'
+method: probed
+source: live probes on 2026-08-27 of https://mcp.bestprice.gr/mcp, https://mcp.bestprice.gr/mcp/server-card,
+  https://mcp.bestprice.gr/server.json, https://www.bestprice.gr/apis.json, /llms.txt, the six served
+  /.well-known/ documents, a rendered product page, and https://github.com/TheBestCo/bestprice-mcp.
+note: >-
+  BestPrice publishes no OpenAPI, no GraphQL SDL, no AsyncAPI, no gRPC and no WSDL. Its machine-readable
+  contract is the MCP tool surface itself: three tools whose inputSchema AND outputSchema are full JSON
+  Schema 2020-12 documents, served live and anonymously. That is a real, fetchable, parameter-complete
+  contract, and it is what every conformance assertion below is read against.
+entries:
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: >-
+    initialize returned protocolVersion 2025-06-18 with capabilities {tools:{listChanged:true},
+    resources:{listChanged:true}}; tools/list returned 3 tools and resources/list returned 2 resources,
+    both HTTP 200 anonymous. Transport is Streamable HTTP (content-type text/event-stream).
+    The server card at /mcp/server-card declares supportedProtocolVersions ["2026-07-28"].
+- id: mcp-server-card
+  name: MCP Server Card
+  conforms: true
+  evidence: >-
+    https://mcp.bestprice.gr/mcp/server-card returns 200 with content-type
+    application/mcp-server-card+json and $schema
+    https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json, carrying name
+    gr.bestprice/mcp, version 1.5.1 and a remotes[] streamable-http entry.
+- id: mcp-server-json
+  name: MCP Registry server.json
+  conforms: true
+  evidence: >-
+    https://mcp.bestprice.gr/server.json returns 200 against $schema
+    https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json, with registry name
+    gr.bestprice/mcp and a repository block. A GitHub workflow (publish-mcp-registry.yml) publishes it.
+- id: mcp-apps
+  name: MCP Apps (UI resources)
+  conforms: true
+  evidence: >-
+    resources/list exposes ui://bestprice/shopping-results-v1.html with mimeType
+    text/html;profile=mcp-app, and each tool's _meta carries ui/resourceUri plus the
+    openai/outputTemplate alias. The provider states structured content stays authoritative when a
+    client does not render the card.
+- id: mcp-tool-annotations
+  name: MCP tool annotations
+  conforms: true
+  evidence: >-
+    All three tools declare readOnlyHint:true, destructiveHint:false, idempotentHint:true,
+    openWorldHint:true in tools/list. Nothing in the surface is annotated as a write.
+- id: json-schema-2020-12
+  name: JSON Schema draft 2020-12
+  conforms: true
+  evidence: >-
+    Every tool inputSchema and outputSchema declares
+    "$schema": "https://json-schema.org/draft/2020-12/schema" and uses 2020-12 keywords
+    (const, exclusiveMinimum, anyOf, prefixItems-free object shapes). Extracted to ../json-schema/.
+- id: json-rpc-2.0
+  name: JSON-RPC 2.0
+  conforms: true
+  evidence: 'All responses carry "jsonrpc":"2.0" with the request id echoed; an unsupported method
+    (prompts/list) returned the standard error object {"code":-32601,"message":"Method not found"}.'
+- id: apis-json
+  name: APIs.json 0.23
+  conforms: true
+  evidence: >-
+    https://www.bestprice.gr/apis.json returns 200 with content-type application/apis+json and
+    specificationVersion "0.23", including apis[].properties[], prompts[].type AgentPrompt,
+    contact[] and maintainers[]. The identical body is also served at /.well-known/apis.json.
+- id: llms-txt
+  name: llms.txt
+  conforms: true
+  evidence: >-
+    https://www.bestprice.gr/llms.txt returns 200 text/plain, 5158 bytes, in llms.txt form —
+    H1, blockquote summary, then sectioned link lists with per-link descriptions. Saved verbatim to
+    ../llms/bestprice-llms.txt. All 12 links resolved during this pass.
+- id: rfc9116-security-txt
+  name: 'RFC 9116: security.txt'
+  conforms: true
+  evidence: >-
+    https://www.bestprice.gr/.well-known/security.txt returns 200 text/plain with the required
+    Contact and Expires fields (Expires 2027-07-31, in the future), plus Preferred-Languages and a
+    Canonical that matches the served URL. The byte-identical file is also served from
+    mcp.bestprice.gr.
+- id: webmcp
+  name: WebMCP (browser-tab tools)
+  conforms: true
+  partial: true
+  evidence: >-
+    https://www.bestprice.gr/.well-known/webmcp.json returns 200 with manifest_version "0.1", origin,
+    updated_at and 13 tools carrying input_schema/output_schema, risk_level and requires_user_confirm.
+    The provider marks the surface experimental and tied to a Chrome origin trial ending 2026-11-17.
+- id: agentic-resource-discovery
+  name: Agentic Resource Discovery (ARD)
+  conforms: true
+  evidence: >-
+    https://www.bestprice.gr/.well-known/ard.json returns 200 with an entries[] array using
+    urn:air: identifiers, type application/mcp-server-card+json, publisher, capabilities and
+    representativeQueries, referencing the ARD context https://agenticresourcediscovery.org/context/v1.
+- id: ai-catalog
+  name: AI Catalog 1.0
+  conforms: true
+  evidence: >-
+    https://www.bestprice.gr/.well-known/ai-catalog.json returns 200 with content-type
+    application/ai-catalog+json, specVersion "1.0", a host block and one entry. The provider's README
+    labels it the legacy path, superseded by ard.json but still served.
+- id: agent-plugins-1.0
+  name: Agent Plugins 1.0
+  conforms: true
+  evidence: >-
+    The GitHub repository root ships plugin.json and mcp.json against
+    https://agent-plugins.org/schemas/1.0.0/{plugin,mcp}.schema.json, both pointing at the same public
+    Streamable HTTP endpoint.
+- id: schema-org-product
+  name: schema.org Product / Offer / AggregateOffer (retail structured data)
+  conforms: true
+  domain_standard: true
+  sector: retail / e-commerce price comparison
+  evidence: >-
+    DOMAIN STANDARD, verified in the contract rather than claimed in prose. A canonical product page
+    (https://www.bestprice.gr/item/2157591869/...html, HTTP 200) emits four JSON-LD blocks including
+    "@context":"https://schema.org","@type":"Product" with sku, brand, manufacturer, category and an
+    offers object of "@type":"AggregateOffer" carrying lowPrice, highPrice, offerCount, priceCurrency,
+    availability and itemCondition, plus a BreadcrumbList and an FAQPage. The MCP tool payloads mirror
+    the same vocabulary in JSON (price_from/offer_count/availability at product level,
+    item_price/shipping_price/total_price/availability at offer level), so a buyer who already speaks
+    schema.org retail structured data reads both surfaces without a bespoke connector.
+- id: eu-dsa-2022-2065
+  name: 'EU Digital Services Act (Regulation (EU) 2022/2065)'
+  conforms: true
+  regulatory: true
+  evidence: >-
+    https://www.bestprice.gr/policies/dsa returns HTTP 200 with a dedicated "Πολιτική για τις
+    Ψηφιακές Υπηρεσίες και το Παράνομο Περιεχόμενο" naming Regulation (EU) 2022/2065, last updated
+    21 July. A versioned terms document (v1.3, with a stated "what changed" summary) is served at
+    /policies/terms and a GDPR-scoped privacy policy at /policies/privacy. These are marketplace
+    regulatory disclosures, NOT security certifications — no SOC 2, ISO 27001, PCI or trust centre is
+    published anywhere on the BestPrice properties, and no Compliance pointer was emitted on this
+    basis.
+  caveat: >-
+    /policies/gdpr returns HTTP 200 but serves the terms-of-use page body byte-for-byte, not a GDPR
+    document; the working link in the site footer is /gdpr. Recorded as an observed defect on the
+    provider's side, not as a missing document.
+- id: rfc9457-problem-details
+  name: 'RFC 9457: Problem Details'
+  conforms: false
+  evidence: >-
+    Not applicable in form and not adopted: the surface always returns HTTP 200 and reports failures
+    inside the JSON-RPC/MCP result. It does define its own structured error object
+    {code, message, retryable}, but the code values are not enumerated in the schema.
+    See ../errors/bestprice-problem-types.yml.
+- id: oauth2
+  name: OAuth 2.0
+  conforms: false
+  evidence: >-
+    No OAuth. https://mcp.bestprice.gr/.well-known/oauth-authorization-server and
+    /.well-known/oauth-protected-resource both return 404, and the published server card sets
+    authentication.required = false with an empty schemes[]. The endpoint is deliberately anonymous.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: /.well-known/openid-configuration on www.bestprice.gr returns the zero-byte SPA catch-all,
+    not a discovery document.
+- id: rfc9727-api-catalog
+  name: 'RFC 9727: /.well-known/api-catalog'
+  conforms: false
+  evidence: >-
+    /.well-known/api-catalog returns HTTP 200 with a zero-byte text/html body — the site's SPA
+    catch-all, not a linkset. Discovery is instead served by apis.json, ard.json and ai-catalog.json.
+- id: a2a-agent-card
+  name: A2A Agent Card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return the zero-byte SPA catch-all on
+    www.bestprice.gr and a hard 404 on mcp.bestprice.gr. No agent card is published, so none was
+    written.
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence: >-
+    /openapi.json, /openapi.yaml, /swagger.json, /api-docs and /graphql on www.bestprice.gr all miss
+    (404 or SPA shell); api.bestprice.gr does not resolve. BestPrice ships no REST API — the MCP tool
+    schemas are the contract.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: /asyncapi.yaml 404s and no webhook, event or streaming surface is documented anywhere on
+    the developer pages or in the GitHub repository. There is no event surface to describe.
+- id: rfc8594-sunset
+  name: 'RFC 8594: Sunset / Deprecation headers'
+  conforms: false
+  evidence: No Sunset or Deprecation header on any observed response, and no published deprecation
+    policy. See ../lifecycle/bestprice-lifecycle.yml.

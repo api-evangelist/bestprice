@@ -1,0 +1,343 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "2.0"
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+        },
+        "currency": {
+          "type": "string",
+          "const": "EUR"
+        },
+        "locale": {
+          "type": "string",
+          "const": "el-GR"
+        },
+        "warnings": {
+          "maxItems": 20,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "product": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 220
+            },
+            "brand": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "model": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 220
+            },
+            "variant": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 180
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "bestprice_url": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "required": [
+            "product_id",
+            "title",
+            "brand",
+            "model",
+            "variant",
+            "bestprice_url"
+          ],
+          "additionalProperties": false
+        },
+        "postal_code": {
+          "type": "string",
+          "pattern": "^[0-9]{5}$"
+        },
+        "objective": {
+          "type": "string",
+          "enum": [
+            "lowest_total_cost",
+            "lowest_item_price",
+            "merchant_rating"
+          ]
+        },
+        "offers": {
+          "maxItems": 10,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "offer_id": {
+                "type": "string",
+                "pattern": "^bp_offer_[0-9]+$"
+              },
+              "merchant_id": {
+                "type": "string",
+                "pattern": "^bp_merchant_[0-9]+$"
+              },
+              "merchant_name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "description": "Sanitized public BestPrice store name."
+              },
+              "merchant_rating": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 5
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "merchant_rating_count": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "verified_merchant": {
+                "type": "boolean",
+                "description": "True when this is a BestPrice-certified store (Πιστοποιημένο κατάστημα)."
+              },
+              "offer_title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 220
+              },
+              "variant": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 180
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "item_price": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 10000000,
+                "description": "Current item price in EUR before shipping."
+              },
+              "shipping_price": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 10000000
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Known or estimated shipping price in EUR; null means unknown."
+              },
+              "shipping_status": {
+                "type": "string",
+                "enum": [
+                  "known",
+                  "estimated",
+                  "unknown"
+                ]
+              },
+              "total_price": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 10000000
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Delivered total in EUR; null whenever shipping is unknown."
+              },
+              "availability": {
+                "type": "string",
+                "enum": [
+                  "in_stock",
+                  "delivery_1_3_days",
+                  "delivery_4_7_days",
+                  "delivery_4_10_days",
+                  "delivery_8_14_days",
+                  "by_order",
+                  "to_order",
+                  "preorder",
+                  "out_of_stock",
+                  "unknown"
+                ]
+              },
+              "delivery_estimate": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "ranking_reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "price_checked_at": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+              }
+            },
+            "required": [
+              "offer_id",
+              "merchant_id",
+              "merchant_name",
+              "merchant_rating",
+              "merchant_rating_count",
+              "verified_merchant",
+              "offer_title",
+              "variant",
+              "item_price",
+              "shipping_price",
+              "shipping_status",
+              "total_price",
+              "availability",
+              "delivery_estimate",
+              "ranking_reason",
+              "price_checked_at"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of",
+        "currency",
+        "locale",
+        "warnings",
+        "product",
+        "postal_code",
+        "objective",
+        "offers"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "2.0"
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+        },
+        "currency": {
+          "type": "string",
+          "const": "EUR"
+        },
+        "locale": {
+          "type": "string",
+          "const": "el-GR"
+        },
+        "warnings": {
+          "maxItems": 20,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of",
+        "currency",
+        "locale",
+        "warnings",
+        "error"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

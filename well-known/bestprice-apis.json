@@ -1,0 +1,126 @@
+{
+    "aid": "bestprice.gr:agent-commerce",
+    "name": "BestPrice Agent Commerce",
+    "type": "Index",
+    "kind": "company",
+    "visibility": "Public",
+    "description": "The public, read-only BestPrice shopping surface for product search, current offer comparison, and price history in Greece.",
+    "image": "https://www.bestprice.gr/images/logo.svg",
+    "tags": [
+        "shopping",
+        "price comparison",
+        "ecommerce",
+        "MCP",
+        "WebMCP",
+        "Greece"
+    ],
+    "created": "2026-08-27",
+    "modified": "2026-08-27",
+    "url": "https://www.bestprice.gr/apis.json",
+    "specificationVersion": "0.23",
+    "apis": [
+        {
+            "aid": "bestprice.gr:shopping-mcp",
+            "name": "BestPrice Shopping MCP",
+            "description": "Read-only shopping tools for finding grouped products, comparing current merchant offers and delivered totals, and checking price history.",
+            "image": "https://www.bestprice.gr/images/logo.svg",
+            "humanURL": "https://www.bestprice.gr/mcp",
+            "baseURL": "https://mcp.bestprice.gr/mcp",
+            "tags": [
+                "shopping",
+                "product search",
+                "offers",
+                "price history",
+                "MCP",
+                "Greece"
+            ],
+            "properties": [
+                {
+                    "type": "MCPServer",
+                    "name": "Production Streamable HTTP endpoint",
+                    "url": "https://mcp.bestprice.gr/mcp"
+                },
+                {
+                    "type": "Documentation",
+                    "name": "BestPrice MCP documentation",
+                    "url": "https://www.bestprice.gr/mcp"
+                },
+                {
+                    "type": "APICatalog",
+                    "name": "Agentic Resource Discovery manifest",
+                    "url": "https://www.bestprice.gr/.well-known/ard.json"
+                },
+                {
+                    "type": "GitHubRepository",
+                    "name": "Provider integration and submission bundle",
+                    "url": "https://github.com/TheBestCo/bestprice-mcp"
+                },
+                {
+                    "type": "LLMsTxt",
+                    "name": "BestPrice AI-readable site guide",
+                    "url": "https://www.bestprice.gr/llms.txt"
+                },
+                {
+                    "type": "SecurityTxt",
+                    "name": "Security contact",
+                    "url": "https://www.bestprice.gr/.well-known/security.txt"
+                },
+                {
+                    "type": "TermsOfService",
+                    "name": "Terms of service",
+                    "url": "https://www.bestprice.gr/policies/terms"
+                },
+                {
+                    "type": "PrivacyPolicy",
+                    "name": "Privacy policy",
+                    "url": "https://www.bestprice.gr/policies/privacy"
+                },
+                {
+                    "type": "Support",
+                    "name": "BestPrice contact",
+                    "url": "https://www.bestprice.gr/contact"
+                }
+            ],
+            "prompts": [
+                {
+                    "type": "AgentPrompt",
+                    "name": "BestPrice shopping examples",
+                    "description": "Provider-authored example requests for the public read-only shopping tools.",
+                    "data": [
+                        {
+                            "prompt": "Search BestPrice.gr for Apple iPhone 16 128GB offers in Greece"
+                        },
+                        {
+                            "prompt": "Find a laptop under €800 in the BestPrice.gr catalogue"
+                        },
+                        {
+                            "prompt": "Compare the delivered total price of a BestPrice product to postal code 11527"
+                        },
+                        {
+                            "prompt": "Show the 180-day price history for a BestPrice product"
+                        },
+                        {
+                            "prompt": "Βρες προϊόντα και σύγκρινε τιμές καταστημάτων στο BestPrice.gr"
+                        }
+                    ]
+                }
+            ],
+            "contact": [
+                {
+                    "FN": "BestPrice.gr Support",
+                    "organizationName": "BestPrice.gr",
+                    "email": "feedback@bestprice.gr",
+                    "url": "https://www.bestprice.gr/contact"
+                }
+            ]
+        }
+    ],
+    "maintainers": [
+        {
+            "FN": "BestPrice.gr Engineering",
+            "organizationName": "BestPrice.gr",
+            "email": "feedback@bestprice.gr",
+            "url": "https://www.bestprice.gr/contact"
+        }
+    ]
+}

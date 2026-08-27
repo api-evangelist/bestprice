@@ -1,0 +1,345 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "2.0"
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+        },
+        "currency": {
+          "type": "string",
+          "const": "EUR"
+        },
+        "locale": {
+          "type": "string",
+          "const": "el-GR"
+        },
+        "warnings": {
+          "maxItems": 20,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "requested_query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400
+        },
+        "interpreted_query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400
+        },
+        "search_mode": {
+          "type": "string",
+          "enum": [
+            "catalog_ranked",
+            "broadened_category"
+          ]
+        },
+        "applied_filters": {
+          "type": "object",
+          "properties": {
+            "price_min": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10000000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "price_max": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 10000000
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sort": {
+              "type": "string",
+              "enum": [
+                "relevance",
+                "price_asc",
+                "price_desc"
+              ]
+            },
+            "feature_hints": {
+              "maxItems": 10,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50
+              }
+            },
+            "feature_hints_verified": {
+              "type": "boolean",
+              "const": false
+            }
+          },
+          "required": [
+            "price_min",
+            "price_max",
+            "sort",
+            "feature_hints",
+            "feature_hints_verified"
+          ],
+          "additionalProperties": false
+        },
+        "suggested_queries": {
+          "maxItems": 5,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          }
+        },
+        "total_matches": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Number of products returned after public scope, price, and result limits; not full catalog cardinality."
+        },
+        "products": {
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 220
+              },
+              "brand": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "model": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 220
+              },
+              "variant": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "category_id": {
+                "anyOf": [
+                  {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "category_title": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "price_from": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 10000000
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "description": "Lowest current item price in EUR before shipping."
+              },
+              "offer_count": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "availability": {
+                "type": "string",
+                "enum": [
+                  "available",
+                  "unavailable",
+                  "unknown"
+                ]
+              },
+              "match_confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Deterministic relative relevance hint based on token coverage and rank; not a probability or feature verification."
+              },
+              "match_basis": {
+                "type": "string",
+                "const": "catalog_relevance_token_coverage_v1"
+              },
+              "data_timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+              },
+              "bestprice_url": {
+                "type": "string",
+                "format": "uri"
+              },
+              "image_url": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "product_id",
+              "title",
+              "brand",
+              "model",
+              "variant",
+              "category_id",
+              "category_title",
+              "price_from",
+              "offer_count",
+              "availability",
+              "match_confidence",
+              "match_basis",
+              "data_timestamp",
+              "bestprice_url",
+              "image_url"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of",
+        "currency",
+        "locale",
+        "warnings",
+        "interpreted_query",
+        "total_matches",
+        "products"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "2.0"
+        },
+        "as_of": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+        },
+        "currency": {
+          "type": "string",
+          "const": "EUR"
+        },
+        "locale": {
+          "type": "string",
+          "const": "el-GR"
+        },
+        "warnings": {
+          "maxItems": 20,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 240
+          }
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 240
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of",
+        "currency",
+        "locale",
+        "warnings",
+        "error"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

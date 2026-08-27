@@ -1,0 +1,54 @@
+generated: '2026-08-27'
+method: probed
+source: https://www.bestprice.gr/mcp (connection guide, tool limits and FAQ),
+  https://github.com/TheBestCo/bestprice-mcp/blob/main/PROVIDER_SETUP.md, and the response headers
+  observed on live anonymous tools/call requests to https://mcp.bestprice.gr/mcp on 2026-08-27.
+docs: https://www.bestprice.gr/mcp
+limit_count: 0
+note: >-
+  BestPrice publishes no request-rate limit for the public MCP endpoint, and none was observable.
+  Live responses carried only x-request-id, cache-control: no-cache, no-transform and
+  x-accel-buffering: no — no RateLimit-*, X-RateLimit-* or Retry-After header appeared on any of the
+  five successful calls made during this pass, and no 429 was produced. What the provider DOES
+  publish are per-call result caps, recorded below as result_limits; they bound the size of a
+  response, not the number of requests, and should not be read as a rate limit.
+limits: []
+observed_headers:
+  present:
+  - x-request-id
+  - cache-control
+  - x-accel-buffering
+  - content-type
+  rate_limit_headers: []
+  retry_after: false
+  status_on_exhaustion: unknown
+result_limits:
+- tool: search_products
+  parameter: limit
+  min: 1
+  max: 8
+  default: 8
+  unit: grouped products per call
+- tool: compare_offers
+  parameter: limit
+  min: 1
+  max: 10
+  default: 10
+  unit: merchant offers per call
+- tool: get_price_history
+  parameter: period_days
+  allowed: [30, 90, 180]
+  default: 180
+  unit: days of daily-minimum history per call
+input_bounds:
+- {tool: search_products, field: query, min_length: 2, max_length: 200}
+- {tool: search_products, field: required_features, max_items: 10}
+- {tool: compare_offers, field: product_id, pattern: '^bp_<id>$ (grouped BestPrice product id)'}
+- {tool: compare_offers, field: postal_code, pattern: '^[0-9]{5}$'}
+x-evidence:
+  fetched: '2026-08-27'
+  url: https://mcp.bestprice.gr/mcp
+  http_status: 200
+  calls_made: 5
+  rate_limit_headers_seen: 0
+  http_429_seen: 0

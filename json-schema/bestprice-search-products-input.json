@@ -1,0 +1,68 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "query": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 200,
+      "description": "Product name, model, category, or natural-language shopping need. Greek and English are accepted."
+    },
+    "locale": {
+      "default": "el-GR",
+      "description": "Response locale. The current service supports el-GR.",
+      "type": "string",
+      "const": "el-GR"
+    },
+    "country": {
+      "default": "GR",
+      "description": "Shopping market. The current service supports Greece (GR).",
+      "type": "string",
+      "const": "GR"
+    },
+    "price_min": {
+      "description": "Optional minimum product price in EUR, before shipping.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "price_max": {
+      "description": "Optional maximum product price in EUR, before shipping.",
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1000000
+    },
+    "required_features": {
+      "default": [],
+      "description": "Optional relevance hints such as OLED, Wi-Fi, or noise cancellation. They are not independently verified for every result; confirm them on the product page.",
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50
+      }
+    },
+    "sort": {
+      "default": "relevance",
+      "description": "Result order. Use relevance unless the user explicitly asks for cheapest or most expensive first.",
+      "type": "string",
+      "enum": [
+        "relevance",
+        "price_asc",
+        "price_desc"
+      ]
+    },
+    "limit": {
+      "default": 8,
+      "description": "Maximum number of grouped products to return, from 1 to 8.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 8
+    }
+  },
+  "required": [
+    "query"
+  ],
+  "additionalProperties": false
+}

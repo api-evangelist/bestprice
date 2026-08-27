@@ -1,0 +1,35 @@
+{
+    "entries": [
+        {
+            "identifier": "urn:air:bestprice.gr:mcp:shopping",
+            "type": "application/mcp-server-card+json",
+            "displayName": "BestPrice Shopping",
+            "description": "Read-only product search, offer comparison, and price history for the Greek market.",
+            "url": "https://mcp.bestprice.gr/mcp/server-card",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "greece",
+                "read-only"
+            ],
+            "version": "1.5.1",
+            "updatedAt": "2026-08-27T00:00:00Z",
+            "publisher": {
+                "identifier": "https://www.bestprice.gr",
+                "displayName": "BestPrice.gr"
+            },
+            "capabilities": [
+                "ProductSearch",
+                "OfferComparison",
+                "PriceHistory"
+            ],
+            "representativeQueries": [
+                "Search BestPrice.gr for Apple iPhone 16 128GB offers in Greece",
+                "Find a laptop under €800 in the BestPrice.gr catalogue",
+                "Compare the delivered total price of a BestPrice product to postal code 11527",
+                "Show the 180-day price history for a BestPrice product",
+                "Βρες προϊόντα και σύγκρινε τιμές καταστημάτων στο BestPrice.gr"
+            ]
+        }
+    ]
+}

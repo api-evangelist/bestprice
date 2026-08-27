@@ -1,0 +1,209 @@
+{
+    "$schema": "https://static.modelcontextprotocol.io/schemas/mcp-server-card/v1.json",
+    "version": "1.0",
+    "protocolVersion": "2025-11-25",
+    "serverInfo": {
+        "name": "bestprice-agent-commerce",
+        "title": "BestPrice Shopping",
+        "description": "Read-only product search, offer comparison, and price history for the Greek market.",
+        "version": "1.5.1",
+        "websiteUrl": "https://www.bestprice.gr/mcp",
+        "icons": [
+            {
+                "src": "https://www.bestprice.gr/images/logo.svg",
+                "mimeType": "image/svg+xml",
+                "sizes": [
+                    "any"
+                ]
+            }
+        ]
+    },
+    "description": "Read-only product search, offer comparison, and price history for the Greek market.",
+    "iconUrl": "https://www.bestprice.gr/images/logo.svg",
+    "documentationUrl": "https://www.bestprice.gr/mcp",
+    "transport": {
+        "type": "streamable-http",
+        "endpoint": "https://mcp.bestprice.gr/mcp"
+    },
+    "capabilities": {
+        "tools": {
+            "listChanged": true
+        },
+        "resources": {
+            "subscribe": false,
+            "listChanged": true
+        }
+    },
+    "authentication": {
+        "required": false,
+        "schemes": []
+    },
+    "instructions": "Start with search_products. Search prices exclude shipping; compare_offers separates item price, shipping, and delivered total.",
+    "tools": [
+        {
+            "name": "search_products",
+            "title": "Search BestPrice products",
+            "description": "Search reviewed technology, appliance, and home categories. Use price fields for hard bounds; feature hints affect relevance but are not independently verified. Prices exclude shipping.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 200,
+                        "description": "Product name, model, category, or natural-language shopping need. Greek and English are accepted."
+                    },
+                    "locale": {
+                        "type": "string",
+                        "const": "el-GR",
+                        "default": "el-GR"
+                    },
+                    "country": {
+                        "type": "string",
+                        "const": "GR",
+                        "default": "GR"
+                    },
+                    "price_min": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 1000000,
+                        "description": "Optional minimum item price in EUR before shipping."
+                    },
+                    "price_max": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000000,
+                        "description": "Optional maximum item price in EUR before shipping."
+                    },
+                    "required_features": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 50
+                        },
+                        "maxItems": 10,
+                        "default": [],
+                        "description": "Optional relevance hints. They are not independently verified for every result."
+                    },
+                    "sort": {
+                        "type": "string",
+                        "enum": [
+                            "relevance",
+                            "price_asc",
+                            "price_desc"
+                        ],
+                        "default": "relevance"
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 8,
+                        "default": 8
+                    }
+                },
+                "required": [
+                    "query"
+                ],
+                "additionalProperties": false
+            },
+            "annotations": {
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true,
+                "openWorldHint": true
+            }
+        },
+        {
+            "name": "compare_offers",
+            "title": "Compare BestPrice offers",
+            "description": "Compare item price, shipping, delivered total, availability, and public store name for one grouped product.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "string",
+                        "pattern": "^bp_[0-9]+$"
+                    },
+                    "postal_code": {
+                        "type": "string",
+                        "pattern": "^[0-9]{5}$"
+                    },
+                    "objective": {
+                        "type": "string",
+                        "enum": [
+                            "lowest_total_cost",
+                            "lowest_item_price",
+                            "merchant_rating"
+                        ],
+                        "default": "lowest_total_cost"
+                    },
+                    "in_stock_only": {
+                        "type": "boolean",
+                        "default": true
+                    },
+                    "minimum_merchant_rating": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 5,
+                        "default": 0
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10,
+                        "default": 10
+                    }
+                },
+                "required": [
+                    "product_id",
+                    "postal_code"
+                ],
+                "additionalProperties": false
+            },
+            "annotations": {
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true,
+                "openWorldHint": true
+            }
+        },
+        {
+            "name": "get_price_history",
+            "title": "Get BestPrice price history",
+            "description": "Summarize the lowest recorded item price over 30, 90, or 180 days for one grouped product.",
+            "inputSchema": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "string",
+                        "pattern": "^bp_[0-9]+$"
+                    },
+                    "period_days": {
+                        "type": "integer",
+                        "enum": [
+                            30,
+                            90,
+                            180
+                        ],
+                        "default": 180
+                    }
+                },
+                "required": [
+                    "product_id"
+                ],
+                "additionalProperties": false
+            },
+            "annotations": {
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true,
+                "openWorldHint": true
+            }
+        }
+    ],
+    "resources": [
+        "dynamic"
+    ],
+    "prompts": []
+}

@@ -1,0 +1,131 @@
+generated: '2026-08-27'
+method: probed
+source: live MCP handshake against https://mcp.bestprice.gr/mcp on 2026-08-27 — initialize,
+  tools/list, resources/list and three tools/call round trips, all anonymous — plus the provider's
+  published server card at https://mcp.bestprice.gr/mcp/server-card, https://mcp.bestprice.gr/server.json,
+  https://www.bestprice.gr/.well-known/mcp.json and the human guide at https://www.bestprice.gr/mcp.
+name: BestPrice Shopping MCP
+status: live
+server:
+  name: bestprice-agent-commerce
+  registry_id: gr.bestprice/mcp
+  title: BestPrice Shopping
+  version: 1.5.1
+  protocol_version: '2025-06-18'
+  server_card_protocol_version: '2025-11-25'
+  server_card_supported_protocol_versions:
+  - '2026-07-28'
+  website: https://www.bestprice.gr/mcp
+  repository: https://github.com/TheBestCo/bestprice-mcp
+  capabilities:
+    tools:
+      listChanged: true
+    resources:
+      subscribe: false
+      listChanged: true
+    prompts: false
+  instructions_published: true
+deployment:
+  mode: remote
+  endpoint: https://mcp.bestprice.gr/mcp
+  transport: streamable-http
+  auth: none
+  verified: probed
+  note: >-
+    Remote-only. The GitHub repository ships client CONFIGURATION (Gemini/Qwen extensions, an Agent
+    Plugins 1.0 plugin.json + mcp.json, a Codex plugin, a VS Code install link) but no stdio server —
+    SECURITY.md states plainly that "the manifests in this repository describe that hosted service;
+    they are not a separately hosted MCP implementation". There is no npx/pip package to install, so
+    the mode is remote and not both.
+authentication:
+  required: false
+  schemes: []
+  note: >-
+    Verified anonymously. initialize, tools/list, resources/list and tools/call all returned 200 with
+    no credential of any kind. Both /.well-known/oauth-protected-resource and
+    /.well-known/oauth-authorization-server on mcp.bestprice.gr return 404, consistent with an
+    unauthenticated public surface. The published server card sets authentication.required = false.
+tools:
+- name: search_products
+  title: Search BestPrice products
+  summary: Find grouped BestPrice products from a natural-language description when the product_id is unknown.
+  required: [query]
+  optional: [locale, country, price_min, price_max, required_features, sort, limit]
+  annotations:
+    readOnlyHint: true
+    destructiveHint: false
+    idempotentHint: true
+    openWorldHint: true
+  input_schema: ../json-schema/bestprice-search-products-input.json
+  output_schema: ../json-schema/bestprice-search-products-output.json
+  limits: >-
+    At most 8 grouped products. Covers reviewed technology, appliance and home-and-garden categories
+    only — not services, digital goods or regulated goods. price_from excludes shipping.
+- name: compare_offers
+  title: Compare BestPrice offers
+  summary: Compare current merchant offers for one product by delivered total cost at a Greek postal code.
+  required: [product_id, postal_code]
+  optional: [objective, in_stock_only, minimum_merchant_rating, limit]
+  annotations:
+    readOnlyHint: true
+    destructiveHint: false
+    idempotentHint: true
+    openWorldHint: true
+  input_schema: ../json-schema/bestprice-compare-offers-input.json
+  output_schema: ../json-schema/bestprice-compare-offers-output.json
+  limits: >-
+    1-10 offers, default 10. product_id must match bp_<id>; postal_code must match ^[0-9]{5}$.
+    item_price, shipping_price and total_price are returned separately and total_price stays null
+    when shipping_status is not "known" — unknown shipping is never treated as zero.
+- name: get_price_history
+  title: Inspect BestPrice price history
+  summary: Return 30/90/180-day minimum and median price windows plus a daily series for one product.
+  required: [product_id]
+  optional: [period_days]
+  annotations:
+    readOnlyHint: true
+    destructiveHint: false
+    idempotentHint: true
+    openWorldHint: true
+  input_schema: ../json-schema/bestprice-get-price-history-input.json
+  output_schema: ../json-schema/bestprice-get-price-history-output.json
+  limits: >-
+    period_days is 30, 90 or 180 (default 180). Methodology is declared in-band as
+    methodology_id = bestprice_daily_min_v1. The tool makes no forward price prediction.
+resources:
+- uri: ui://bestprice/shopping-results-v1.html
+  name: bestprice-shopping-results
+  mime_type: text/html;profile=mcp-app
+  note: Optional MCP Apps UI card. Structured content remains authoritative for clients that do not render it.
+- uri: mcp://server-card.json
+  name: bestprice-server-card
+  mime_type: application/json
+prompts:
+  supported: false
+  note: prompts/list returns JSON-RPC -32601 Method not found. Example prompts are instead published
+    in the provider's apis.json under prompts[].type AgentPrompt.
+write_surface: false
+safety:
+  read_only: true
+  note: >-
+    Every published tool is read-only and annotated readOnlyHint=true / destructiveHint=false. The
+    service cannot place an order, take a payment, modify a cart, or return a direct merchant URL —
+    it returns a signed, short-lived BestPrice landing link instead, which the provider documents as
+    non-billable until the shopper picks a merchant.
+observability:
+  request_id_header: x-request-id
+  note: Every MCP response carried an x-request-id UUID. SECURITY.md asks reporters to include it.
+x-evidence:
+  fetched: '2026-08-27'
+  endpoint: https://mcp.bestprice.gr/mcp
+  initialize_status: 200
+  tools_list_status: 200
+  tools_list_count: 3
+  resources_list_status: 200
+  resources_list_count: 2
+  prompts_list_status: 200
+  prompts_list_error: '-32601 Method not found'
+  tools_call_status: 200
+  content_type: text/event-stream
+  server_card_status: 200
+  server_json_status: 200

@@ -1,0 +1,522 @@
+{
+    "manifest_version": "0.1",
+    "origin": "https://www.bestprice.gr",
+    "updated_at": "2026-08-27T00:00:00Z",
+    "tools": [
+        {
+            "name": "search_bestprice",
+            "description": "Start a BestPrice product search and navigate the open browser tab to the results.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "navigation"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 120,
+                        "description": "Product, brand, model, or shopping need to search for."
+                    }
+                },
+                "required": [
+                    "query"
+                ],
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "get_visible_products",
+            "description": "Return up to eight products currently shown on a BestPrice listing page.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "read-only"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 8,
+                        "description": "Maximum products to return."
+                    }
+                },
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "open_visible_product",
+            "description": "Open a product currently shown on a BestPrice listing page, using its returned product ID.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "navigation"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "product_id": {
+                        "type": "string",
+                        "pattern": "^\\d{1,20}$",
+                        "description": "Numeric product ID returned by get_visible_products."
+                    }
+                },
+                "required": [
+                    "product_id"
+                ],
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "get_listing_filters",
+            "description": "Return selected and available values from the filters currently shown on a listing page.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "read-only"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "apply_listing_filter",
+            "description": "Apply a visible filter value by its full label or one unambiguous partial label.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "navigation"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "filter": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 64,
+                        "description": "Visible filter name or key."
+                    },
+                    "value": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 72,
+                        "description": "Visible filter value or unique partial label."
+                    }
+                },
+                "required": [
+                    "filter",
+                    "value"
+                ],
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "clear_listing_filters",
+            "description": "Clear the filters currently applied to a BestPrice listing page.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "navigation"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "get_listing_sort_options",
+            "description": "Return the sorting options currently shown on a BestPrice listing page.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "read-only"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "apply_listing_sort",
+            "description": "Apply a visible sorting option by its full label or one unambiguous partial label.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "navigation"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "sort": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 72,
+                        "description": "Visible sorting option or unique partial label."
+                    }
+                },
+                "required": [
+                    "sort"
+                ],
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "get_page_product",
+            "description": "Return the product, current minimum price, rating, and offer count shown on this item page.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "read-only"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "compare_page_offers",
+            "description": "Compare up to four visible offers by item price, shipping, delivered price, availability, and merchant rating.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "read-only"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 4,
+                        "description": "Number of lowest-delivered-price offers to return."
+                    }
+                },
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "get_product_specifications",
+            "description": "Return structured specifications for the product on the open item page.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "read-only"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "section": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 48,
+                        "description": "Use all or a specification section name shown on this product."
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 16,
+                        "description": "Maximum specification facts to return."
+                    }
+                },
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "summarize_price_history",
+            "description": "Return current, lowest, and highest recorded prices plus recent and overall price direction.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "read-only"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        },
+        {
+            "name": "show_price_history",
+            "description": "Open or focus the price-history chart for the product currently shown on the item page.",
+            "version": "1.3.0",
+            "tags": [
+                "shopping",
+                "price-comparison",
+                "navigation"
+            ],
+            "risk_level": "low",
+            "requires_user_confirm": false,
+            "input_schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+            },
+            "output_schema": {
+                "type": "object",
+                "properties": {
+                    "ok": {
+                        "type": "boolean",
+                        "description": "Whether the page completed the requested operation."
+                    },
+                    "error": {
+                        "type": "string",
+                        "description": "A safe error message when ok is false."
+                    }
+                },
+                "required": [
+                    "ok"
+                ],
+                "additionalProperties": true
+            }
+        }
+    ]
+}

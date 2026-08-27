@@ -1,0 +1,4 @@
+Contact: https://www.bestprice.gr/contact
+Expires: 2027-07-31T23:59:59Z
+Preferred-Languages: el, en
+Canonical: https://www.bestprice.gr/.well-known/security.txt

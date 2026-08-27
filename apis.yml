@@ -3,15 +3,25 @@ name: BestPrice Agent Commerce
 type: Index
 kind: company
 visibility: Public
-description: The public, read-only BestPrice shopping surface for product search, current offer comparison, and price history
-  in Greece.
+description: >-
+  BestPrice.gr is Greece's largest price-comparison marketplace, run by The Best Company S.A.,
+  covering roughly 25.7 million products from about 3,650 merchants and 42,000 manufacturers with
+  hourly merchant-feed refreshes. Its developer surface is not a REST API but a public, keyless,
+  read-only MCP server at https://mcp.bestprice.gr/mcp, exposing three tools - search_products,
+  compare_offers and get_price_history - whose JSON Schema 2020-12 input and output contracts are
+  served live and anonymously. Alongside it BestPrice publishes an APIs.json 0.23 index, an llms.txt,
+  an RFC 9116 security.txt, an Agentic Resource Discovery manifest and an experimental WebMCP
+  manifest of 13 browser-tab tools.
 image: https://www.bestprice.gr/images/logo.svg
 tags:
 - shopping
 - price comparison
 - ecommerce
+- retail
 - MCP
+- Model Context Protocol
 - WebMCP
+- agent commerce
 - Greece
 created: '2026-08-27'
 modified: '2026-08-27'
@@ -60,6 +70,51 @@ apis:
   - type: Support
     name: BestPrice contact
     url: https://www.bestprice.gr/contact
+  - type: MCPServer
+    name: Probed MCP server profile (tools, schemas, deployment)
+    url: mcp/bestprice-mcp.yml
+  - type: ToolManifest
+    name: Verbatim MCP tools/list response
+    url: mcp/bestprice-tools.json
+  - type: JSONSchema
+    name: search_products input schema
+    url: json-schema/bestprice-search-products-input.json
+  - type: JSONSchema
+    name: search_products output schema
+    url: json-schema/bestprice-search-products-output.json
+  - type: JSONSchema
+    name: compare_offers input schema
+    url: json-schema/bestprice-compare-offers-input.json
+  - type: JSONSchema
+    name: compare_offers output schema
+    url: json-schema/bestprice-compare-offers-output.json
+  - type: JSONSchema
+    name: get_price_history input schema
+    url: json-schema/bestprice-get-price-history-input.json
+  - type: JSONSchema
+    name: get_price_history output schema
+    url: json-schema/bestprice-get-price-history-output.json
+  - type: Authentication
+    name: Authentication profile (anonymous, verified)
+    url: authentication/bestprice-authentication.yml
+  - type: RateLimits
+    name: Rate limits and per-call result caps
+    url: rate-limits/bestprice-rate-limits.yml
+  - type: ErrorCatalog
+    name: Error envelopes and validation behaviour
+    url: errors/bestprice-problem-types.yml
+  - type: DataModel
+    name: Entity graph derived from the tool schemas
+    url: data-model/bestprice-data-model.yml
+  - type: Conventions
+    name: Runtime semantics, safety conventions and reversibility
+    url: conventions/bestprice-conventions.yml
+  - type: APIReference
+    name: BestPrice MCP tool reference
+    url: https://www.bestprice.gr/mcp#mcp-tools
+  - type: GettingStarted
+    name: Connect in a minute
+    url: https://www.bestprice.gr/mcp#mcp-quickstart
   prompts:
   - type: AgentPrompt
     name: BestPrice shopping examples
@@ -80,3 +135,95 @@ maintainers:
   organizationName: BestPrice.gr
   email: feedback@bestprice.gr
   url: https://www.bestprice.gr/contact
+common:
+- type: DomainSecurity
+  url: security/bestprice-domain-security.yml
+- type: MCPServer
+  name: BestPrice Shopping MCP (probed profile)
+  url: mcp/bestprice-mcp.yml
+- type: WebMCP
+  name: BestPrice WebMCP browser-tab tool surface
+  url: mcp/bestprice-webmcp.yml
+- type: WellKnown
+  name: Probed /.well-known/ index (6 served documents across 2 hosts)
+  url: well-known/bestprice-well-known.yml
+- type: SecurityTxt
+  name: security.txt (verbatim, RFC 9116)
+  url: well-known/bestprice-security.txt
+- type: APICatalog
+  name: Agentic Resource Discovery manifest (verbatim)
+  url: well-known/bestprice-ard.json
+- type: LLMsTxt
+  name: llms.txt (verbatim)
+  url: llms/bestprice-llms.txt
+- type: Authentication
+  name: Authentication profile
+  url: authentication/bestprice-authentication.yml
+- type: Conformance
+  name: Standards conformance assertions with evidence
+  url: conformance/bestprice-conformance.yml
+- type: Conventions
+  name: Cross-cutting runtime semantics and reversibility
+  url: conventions/bestprice-conventions.yml
+- type: ErrorCatalog
+  name: Error catalog
+  url: errors/bestprice-problem-types.yml
+- type: Lifecycle
+  name: Versioning and support lifecycle
+  url: lifecycle/bestprice-lifecycle.yml
+- type: ChangeLog
+  name: Version history (MCP Registry + extension releases)
+  url: changelog/bestprice-changelog.yml
+- type: Plans
+  name: Plans and pricing (free public, no plans published)
+  url: plans/bestprice-plans-pricing.yml
+- type: RateLimits
+  name: Rate limits and result caps
+  url: rate-limits/bestprice-rate-limits.yml
+- type: Packages
+  name: Distribution and client extension manifests
+  url: packages/bestprice-packages.yml
+- type: Components
+  name: MCP Apps UI card
+  url: components/bestprice-components.yml
+- type: DataModel
+  name: Entity graph
+  url: data-model/bestprice-data-model.yml
+- type: Security
+  name: Vulnerability disclosure program
+  url: security/bestprice-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  name: Vulnerability disclosure detail
+  url: security/bestprice-vulnerability-disclosure.yml
+- type: AgentSkill
+  name: Packaged agent skills for the BestPrice MCP tools
+  url: skills/_index.yml
+- type: GitHubOrganization
+  name: TheBestCo on GitHub
+  url: https://github.com/TheBestCo
+- type: GitHubRepository
+  name: BestPrice MCP integration repository
+  url: https://github.com/TheBestCo/bestprice-mcp
+- type: DeveloperPortal
+  name: BestPrice for AI
+  url: https://www.bestprice.gr/mcp
+- type: Documentation
+  name: BestPrice MCP documentation
+  url: https://www.bestprice.gr/mcp
+- type: Blog
+  name: BestPrice Stories
+  url: https://www.bestprice.gr/stories
+- type: Support
+  name: BestPrice contact
+  url: https://www.bestprice.gr/contact
+- type: TermsOfService
+  name: Terms of service
+  url: https://www.bestprice.gr/policies/terms
+- type: PrivacyPolicy
+  name: Privacy policy
+  url: https://www.bestprice.gr/policies/privacy
+x-enrichment:
+  date: '2026-08-27'
+  status: enriched
+  artifacts_added: 37
+  pass: local-v1

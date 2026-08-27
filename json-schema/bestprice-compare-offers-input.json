@@ -1,0 +1,49 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "product_id": {
+      "type": "string",
+      "description": "Exact grouped BestPrice product id returned by search_products, in bp_<id> form."
+    },
+    "postal_code": {
+      "type": "string",
+      "pattern": "^[0-9]{5}$",
+      "description": "Five-digit Greek delivery postal code used to calculate shipping and total cost."
+    },
+    "objective": {
+      "default": "lowest_total_cost",
+      "description": "How to rank offers. Prefer lowest_total_cost because it includes known shipping.",
+      "type": "string",
+      "enum": [
+        "lowest_total_cost",
+        "lowest_item_price",
+        "merchant_rating"
+      ]
+    },
+    "in_stock_only": {
+      "default": true,
+      "description": "When true, omit offers that are not currently available.",
+      "type": "boolean"
+    },
+    "minimum_merchant_rating": {
+      "default": 0,
+      "description": "Optional minimum merchant rating on a 0 to 5 scale.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "limit": {
+      "default": 10,
+      "description": "Maximum number of current merchant offers to return, from 1 to 10.",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10
+    }
+  },
+  "required": [
+    "product_id",
+    "postal_code"
+  ],
+  "additionalProperties": false
+}
