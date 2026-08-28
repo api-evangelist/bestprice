@@ -12,6 +12,18 @@ description: >-
   served live and anonymously. Alongside it BestPrice publishes an APIs.json 0.23 index, an llms.txt,
   an RFC 9116 security.txt, an Agentic Resource Discovery manifest and an experimental WebMCP
   manifest of 13 browser-tab tools.
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 image: https://www.bestprice.gr/images/logo.svg
 tags:
 - shopping
