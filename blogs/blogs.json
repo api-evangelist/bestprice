@@ -1,0 +1,11 @@
+{
+  "repo": "bestprice",
+  "feeds": [
+    {
+      "source": "https://www.bestprice.gr/mcp",
+      "error": "TimeoutError"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-08-30T22:33:40Z"
+}

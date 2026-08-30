@@ -26,6 +26,15 @@ deliveryModel:
   method: derived
 image: https://www.bestprice.gr/images/logo.svg
 tags:
+- Shopping
+- Price Comparison
+- E-Commerce
+- Retail
+- MCP
+- WebMCP
+- Agent Commerce
+- Greece
+tags_raw:
 - shopping
 - price comparison
 - ecommerce
@@ -48,6 +57,13 @@ apis:
   humanURL: https://www.bestprice.gr/mcp
   baseURL: https://mcp.bestprice.gr/mcp
   tags:
+  - Shopping
+  - Product Search
+  - Offers
+  - Price History
+  - MCP
+  - Greece
+  tags_raw:
   - shopping
   - product search
   - offers
