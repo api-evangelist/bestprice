@@ -164,6 +164,9 @@ maintainers:
   email: feedback@bestprice.gr
   url: https://www.bestprice.gr/contact
 common:
+- type: License
+  name: Apache-2.0
+  url: https://github.com/TheBestCo/bestprice-mcp/blob/main/LICENSE
 - type: DomainSecurity
   url: security/bestprice-domain-security.yml
 - type: MCPServer
