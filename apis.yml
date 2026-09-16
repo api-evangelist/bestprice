@@ -3,15 +3,13 @@ name: BestPrice Agent Commerce
 type: Index
 kind: company
 visibility: Public
-description: >-
-  BestPrice.gr is Greece's largest price-comparison marketplace, run by The Best Company S.A.,
-  covering roughly 25.7 million products from about 3,650 merchants and 42,000 manufacturers with
-  hourly merchant-feed refreshes. Its developer surface is not a REST API but a public, keyless,
-  read-only MCP server at https://mcp.bestprice.gr/mcp, exposing three tools - search_products,
-  compare_offers and get_price_history - whose JSON Schema 2020-12 input and output contracts are
-  served live and anonymously. Alongside it BestPrice publishes an APIs.json 0.23 index, an llms.txt,
-  an RFC 9116 security.txt, an Agentic Resource Discovery manifest and an experimental WebMCP
-  manifest of 13 browser-tab tools.
+description: BestPrice.gr is Greece's largest price-comparison marketplace, run by The Best Company S.A.,
+  covering roughly 25.7 million products from about 3,650 merchants and 42,000 manufacturers with hourly
+  merchant-feed refreshes. Its developer surface is not a REST API but a public, keyless, read-only MCP
+  server at https://mcp.bestprice.gr/mcp, exposing three tools - search_products, compare_offers and get_price_history
+  - whose JSON Schema 2020-12 input and output contracts are served live and anonymously. Alongside it
+  BestPrice publishes an APIs.json 0.23 index, an llms.txt, an RFC 9116 security.txt, an Agentic Resource
+  Discovery manifest and an experimental WebMCP manifest of 13 browser-tab tools.
 deliveryModel:
   model: unknown
   open_source: unknown
@@ -59,14 +57,14 @@ tags_raw:
 - agent commerce
 - Greece
 created: '2026-08-27'
-modified: '2026-08-27'
+modified: '2026-09-16'
 url: https://www.bestprice.gr/apis.json
 specificationVersion: '0.23'
 apis:
 - aid: bestprice.gr:shopping-mcp
   name: BestPrice Shopping MCP
-  description: Read-only shopping tools for finding grouped products, comparing current merchant offers and delivered totals,
-    and checking price history.
+  description: Read-only shopping tools for finding grouped products, comparing current merchant offers
+    and delivered totals, and checking price history.
   image: https://www.bestprice.gr/images/logo.svg
   humanURL: https://www.bestprice.gr/mcp
   baseURL: https://mcp.bestprice.gr/mcp
@@ -178,6 +176,8 @@ maintainers:
   email: feedback@bestprice.gr
   url: https://www.bestprice.gr/contact
 common:
+- type: Website
+  url: https://bestprice.gr
 - type: License
   name: Apache-2.0
   url: https://github.com/TheBestCo/bestprice-mcp/blob/main/LICENSE
