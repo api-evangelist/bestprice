@@ -1,15 +1,12 @@
-generated: '2026-08-27'
+generated: '2026-09-25'
 method: probed
-source: resources/list against https://mcp.bestprice.gr/mcp (HTTP 200, 2026-08-27), the _meta blocks
-  on each tool in tools/list, and the "Προαιρετική κάρτα MCP Apps" section of
-  https://www.bestprice.gr/mcp.
-note: >-
-  BestPrice publishes no web components, element library or embeddable dashboard for a website. The
-  one client-side UI surface it ships is an MCP Apps card served to the AI HOST rather than to a page,
-  and the provider is careful that it is optional: structured content stays authoritative and every
-  tool mirrors its full JSON into TextContent for hosts that render neither the card nor
-  structuredContent. That is the right default, and it is recorded here because "has an agent UI" and
-  "requires an agent UI" are very different postures.
+source: resources/list against https://mcp.bestprice.gr/mcp (HTTP 200, 2026-08-27), the _meta blocks on each tool
+  in tools/list, and the "Προαιρετική κάρτα MCP Apps" section of https://www.bestprice.gr/mcp.
+note: 'BestPrice publishes no web components, element library or embeddable dashboard for a website. The one client-side
+  UI surface it ships is an MCP Apps card served to the AI HOST rather than to a page, and the provider is careful
+  that it is optional: structured content stays authoritative and every tool mirrors its full JSON into TextContent
+  for hosts that render neither the card nor structuredContent. That is the right default, and it is recorded here
+  because "has an agent UI" and "requires an agent UI" are very different postures.'
 component_count: 1
 families:
 - name: MCP Apps
@@ -20,19 +17,31 @@ families:
     name: bestprice-shopping-results
     title: BestPrice shopping results
     mime_type: text/html;profile=mcp-app
-    description: Optional portable product cards, offer comparison, and price-history UI.
-    bound_tools: [search_products, compare_offers, get_price_history]
+    description: Optional portable product and basket cards, offer comparison, and price-history UI.
+    bound_tools:
+    - get_shopping_decision
+    - search_products
+    - compare_offers
+    - get_price_history
     binding_keys:
     - _meta."ui/resourceUri"
     - _meta.ui.resourceUri
     - _meta."openai/outputTemplate"
     invocation_labels:
-      search_products: {invoking: 'Searching BestPrice…', invoked: 'Products ready.'}
-      compare_offers: {invoking: 'Comparing BestPrice offers…'}
-      get_price_history: {invoking: 'Checking BestPrice price history…'}
-    fallback: >-
-      Hosts that do not render the card lose no information — each tool returns the same bounded JSON
-      as TextContent alongside structuredContent.
+      get_shopping_decision:
+        invoking: Checking your shopping needs…
+        invoked: Shopping decision ready.
+      search_products:
+        invoking: Searching BestPrice…
+        invoked: Products ready.
+      compare_offers:
+        invoking: Comparing BestPrice offers…
+        invoked: Offers compared.
+      get_price_history:
+        invoking: Checking BestPrice price history…
+        invoked: Price history ready.
+    fallback: Hosts that do not render the card lose no information — each tool returns the same bounded JSON as
+      TextContent alongside structuredContent.
 loader_libraries: []
 web_components: []
 embedded_dashboards: []

@@ -4,32 +4,38 @@
     "type": "Index",
     "kind": "company",
     "visibility": "Public",
-    "description": "The public, read-only BestPrice shopping surface for product search, current offer comparison, and price history in Greece.",
+    "description": "The public, read-only BestPrice shopping surface for recommendations and shopping decisions, product search, current Greek merchant offer comparison, delivered totals, and price history.",
     "image": "https://www.bestprice.gr/images/logo.svg",
     "tags": [
         "shopping",
+        "product recommendations",
+        "shopping decisions",
         "price comparison",
+        "delivered price",
         "ecommerce",
         "MCP",
         "WebMCP",
         "Greece"
     ],
     "created": "2026-08-27",
-    "modified": "2026-08-27",
+    "modified": "2026-09-24",
     "url": "https://www.bestprice.gr/apis.json",
     "specificationVersion": "0.23",
     "apis": [
         {
             "aid": "bestprice.gr:shopping-mcp",
             "name": "BestPrice Shopping MCP",
-            "description": "Read-only shopping tools for finding grouped products, comparing current merchant offers and delivered totals, and checking price history.",
+            "description": "Read-only shopping tools for product recommendations and shopping decisions, grouped-product search, current Greek merchant offers and delivered totals, and price history.",
             "image": "https://www.bestprice.gr/images/logo.svg",
             "humanURL": "https://www.bestprice.gr/mcp",
             "baseURL": "https://mcp.bestprice.gr/mcp",
             "tags": [
                 "shopping",
+                "product recommendations",
+                "shopping decisions",
                 "product search",
                 "offers",
+                "delivered price",
                 "price history",
                 "MCP",
                 "Greece"
@@ -61,6 +67,11 @@
                     "url": "https://www.bestprice.gr/llms.txt"
                 },
                 {
+                    "type": "LLMsFullTxt",
+                    "name": "BestPrice comprehensive AI-readable site guide",
+                    "url": "https://www.bestprice.gr/llms-full.txt"
+                },
+                {
                     "type": "SecurityTxt",
                     "name": "Security contact",
                     "url": "https://www.bestprice.gr/.well-known/security.txt"
@@ -88,19 +99,19 @@
                     "description": "Provider-authored example requests for the public read-only shopping tools.",
                     "data": [
                         {
-                            "prompt": "Search BestPrice.gr for Apple iPhone 16 128GB offers in Greece"
+                            "prompt": "What is the best phone under €500 in Greece with a good camera, NFC, and 5G?"
                         },
                         {
-                            "prompt": "Find a laptop under €800 in the BestPrice.gr catalogue"
+                            "prompt": "Which Greek store has the lowest delivered price for Sony WH-1000XM5 to postcode 11527?"
                         },
                         {
-                            "prompt": "Compare the delivered total price of a BestPrice product to postal code 11527"
+                            "prompt": "Is €799 a good price for this TV compared with the last six months?"
                         },
                         {
-                            "prompt": "Show the 180-day price history for a BestPrice product"
+                            "prompt": "Ποιο laptop να πάρω έως 700€ για σχολή με τουλάχιστον 16GB RAM;"
                         },
                         {
-                            "prompt": "Βρες προϊόντα και σύγκρινε τιμές καταστημάτων στο BestPrice.gr"
+                            "prompt": "Πού θα βρω αυτό το προϊόν φθηνότερα μαζί με τα μεταφορικά;"
                         }
                     ]
                 }

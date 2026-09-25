@@ -1,0 +1,6 @@
+generated: '2026-09-25'
+method: searched
+source: https://www.bestprice.gr/llms.txt
+bytes: 6942
+status: 200
+note: saved verbatim; the provider's own document. www.bestprice.gr answers 403 to non-browser user-agents (including harvest-llms.py's "api-evangelist/1.0" UA), so this copy was fetched with a browser user-agent on 2026-09-25. The file is served, not model-written.

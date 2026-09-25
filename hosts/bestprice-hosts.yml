@@ -1,0 +1,60 @@
+generated: '2026-09-25'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 4
+  own: 3
+  other_domain: 0
+  platform: 1
+  roles:
+  - other
+  - portal
+  - source
+  - website
+hosts:
+- host: bestprice.gr
+  found_by:
+  - pointer
+  types:
+  - Website
+  serves: []
+  registrable_domain: bestprice.gr
+  role: website
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - License
+  - GitHubOrganization
+  - GitHubRepository
+  serves: []
+  registrable_domain: github.com
+  role: source
+  relation: platform
+- host: mcp.bestprice.gr
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: bestprice.gr
+  role: other
+  relation: own
+- host: www.bestprice.gr
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - DeveloperPortal
+  - Documentation
+  - Blog
+  - Support
+  - TermsOfService
+  - PrivacyPolicy
+  serves:
+  - docs
+  registrable_domain: bestprice.gr
+  role: portal
+  relation: own

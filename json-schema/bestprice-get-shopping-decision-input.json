@@ -1,0 +1,58 @@
+{
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000,
+      "description": "The current shopping question, including budget and required specifications. Greek and English are accepted."
+    },
+    "postal_code": {
+      "description": "Optional Greek delivery postcode (five digits, 10000 to 85999) supplied by the user. It is required for basket plans; without it, shipping and delivered totals remain unknown.",
+      "type": "string",
+      "pattern": "^(?:[1-7][0-9]{4}|8[0-5][0-9]{3})$"
+    },
+    "history": {
+      "default": [],
+      "description": "Optional recent conversation supplied by this caller, never a BestPrice account-history lookup. Current user corrections take precedence.",
+      "maxItems": 12,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "evidence_detail": {
+      "default": "summary",
+      "description": "Optional evidence depth. 'summary' (default) returns only the claims this result cites by id (typed attributes, price history), the claims they are derived from and the sources they cite, and counts what it omits. 'full' returns every returned-product claim and source, including each offer's field receipts, complete spec sheets and ranking inputs; it is several times larger.",
+      "type": "string",
+      "enum": [
+        "summary",
+        "full"
+      ]
+    }
+  },
+  "required": [
+    "message"
+  ],
+  "additionalProperties": false
+}

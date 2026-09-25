@@ -1,10 +1,10 @@
-generated: '2026-08-27'
+generated: '2026-09-25'
 method: searched
-source: https://github.com/TheBestCo/bestprice-mcp/blob/main/SECURITY.md (supported-version policy),
-  the GitHub Releases API for TheBestCo/bestprice-mcp, live initialize/server-card responses from
-  https://mcp.bestprice.gr/mcp on 2026-08-27, and https://www.bestprice.gr/mcp.
+source: https://github.com/TheBestCo/bestprice-mcp/blob/main/SECURITY.md (supported-version policy), the GitHub
+  Releases API for TheBestCo/bestprice-mcp, live initialize/server-card responses from https://mcp.bestprice.gr/mcp
+  on 2026-08-27 and re-probed 2026-09-25, and https://www.bestprice.gr/mcp.
 docs: https://www.bestprice.gr/mcp
-current_version: 1.5.1
+current_version: 1.8.1
 versioning:
   scheme: semver, in-band
   where_published:
@@ -14,23 +14,24 @@ versioning:
   - https://www.bestprice.gr/.well-known/ard.json -> entries[0].version
   payload_contract_version: schema_version 2.0 on every tool result
   url_versioning: false
+  protocol_revisions: initialize negotiates 2025-11-25, 2025-06-18, 2025-03-26, 2024-11-05 and 2024-10-07; the 2026-07-28
+    per-request revision is also served (README, Protocol details).
+  revision_header: x-bestprice-revision (a commit-shaped hash on every response)
 support_policy:
-  statement: >-
-    "The hosted service at https://mcp.bestprice.gr/mcp is continuously updated. Only its current
-    production version is supported."
+  statement: '"The hosted service is continuously updated; only its current production version is supported. The
+    manifests in this repository describe that hosted service, and the stdio bridge is supported at its latest tagged
+    release."'
   source: https://github.com/TheBestCo/bestprice-mcp/blob/main/SECURITY.md
-  implication: >-
-    A single rolling version with no maintained N-1. There is no pinning mechanism for a consumer, so
+  implication: A single rolling version with no maintained N-1. There is no pinning mechanism for a consumer, so
     a client's only version signal is the in-band serverInfo.version and schema_version it reads back.
-deprecation_policy:
+deprecation_policy: &id001
   published: false
   sunset_headers: false
   deprecation_headers: false
   deprecated_operations: []
-  note: >-
-    No deprecation policy, no RFC 8594 Sunset/Deprecation headers, no advance-notice window and no
-    changelog of breaking changes for the hosted MCP service. Given the stated rolling-release model
-    this is the clearest lifecycle gap on the profile: a consumer has no contractual notice period.
+  note: 'No deprecation policy, no RFC 8594 Sunset/Deprecation headers, no advance-notice window and no changelog
+    of breaking changes for the hosted MCP service. Given the stated rolling-release model this is the clearest
+    lifecycle gap on the profile: a consumer has no contractual notice period.'
 sla:
   published: false
 status_page:
@@ -38,19 +39,18 @@ status_page:
   probed:
   - url: https://status.bestprice.gr/
     status: <no response - host does not resolve>
-  note: No status page, uptime history or incident feed found on any BestPrice property or in the
-    GitHub repository.
+  note: No status page, uptime history or incident feed found on any BestPrice property or in the GitHub repository.
 announced_end_dates:
 - surface: WebMCP browser-tab tools
   date: '2026-11-17'
   kind: chrome-origin-trial-expiry
   source: https://www.bestprice.gr/mcp
-  note: >-
-    The provider states participation in the Chrome trial runs to 17 November 2026 and that support
-    may change. This is the only dated end-of-life anywhere on the profile, and it is honestly
-    disclosed rather than buried — but it applies to the experimental in-page surface, not to the
-    remote MCP endpoint.
+  note: The provider states participation in the Chrome trial runs to 17 November 2026 and that support may change.
+    This is the only dated end-of-life anywhere on the profile, and it is honestly disclosed rather than buried
+    — but it applies to the experimental in-page surface, not to the remote MCP endpoint.
 releases:
-  scope: client extension repository only (not the hosted service)
+  scope: 'hosted service: registry version line + in-band version; repository package: CHANGELOG.md (Keep a Changelog),
+    now 1.4.3'
   repository: https://github.com/TheBestCo/bestprice-mcp
   see: ../changelog/bestprice-changelog.yml
+deprecation: *id001

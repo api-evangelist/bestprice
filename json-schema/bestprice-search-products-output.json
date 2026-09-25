@@ -6,30 +6,19 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "type": "string",
-          "const": "2.0"
+          "$ref": "#/$defs/__schema0"
         },
         "as_of": {
-          "type": "string",
-          "format": "date-time",
-          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          "$ref": "#/$defs/__schema1"
         },
         "currency": {
-          "type": "string",
-          "const": "EUR"
+          "$ref": "#/$defs/__schema2"
         },
         "locale": {
-          "type": "string",
-          "const": "el-GR"
+          "$ref": "#/$defs/__schema3"
         },
         "warnings": {
-          "maxItems": 20,
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 240
-          }
+          "$ref": "#/$defs/__schema4"
         },
         "requested_query": {
           "type": "string",
@@ -43,37 +32,18 @@
         },
         "search_mode": {
           "type": "string",
-          "enum": [
-            "catalog_ranked",
-            "broadened_category"
-          ]
+          "maxLength": 100,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "How the returned catalog page was retrieved. Known values: catalog_ranked, broadened_category. New values are added without a tools/list change."
         },
         "applied_filters": {
           "type": "object",
           "properties": {
             "price_min": {
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 10000000
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/$defs/__schema6"
             },
             "price_max": {
-              "anyOf": [
-                {
-                  "type": "number",
-                  "minimum": 0,
-                  "maximum": 10000000
-                },
-                {
-                  "type": "null"
-                }
-              ]
+              "$ref": "#/$defs/__schema6"
             },
             "sort": {
               "type": "string",
@@ -87,9 +57,7 @@
               "maxItems": 10,
               "type": "array",
               "items": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 50
+                "$ref": "#/$defs/__schema8"
               }
             },
             "feature_hints_verified": {
@@ -103,16 +71,13 @@
             "sort",
             "feature_hints",
             "feature_hints_verified"
-          ],
-          "additionalProperties": false
+          ]
         },
         "suggested_queries": {
           "maxItems": 5,
           "type": "array",
           "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 400
+            "$ref": "#/$defs/__schema9"
           }
         },
         "total_matches": {
@@ -125,145 +90,13 @@
           "maxItems": 8,
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "product_id": {
-                "type": "string"
-              },
-              "title": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 220
-              },
-              "brand": {
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 80
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "model": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 220
-              },
-              "variant": {
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 160
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "category_id": {
-                "anyOf": [
-                  {
-                    "type": "integer",
-                    "exclusiveMinimum": 0,
-                    "maximum": 9007199254740991
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "category_title": {
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "price_from": {
-                "anyOf": [
-                  {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 10000000
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Lowest current item price in EUR before shipping."
-              },
-              "offer_count": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 9007199254740991
-              },
-              "availability": {
-                "type": "string",
-                "enum": [
-                  "available",
-                  "unavailable",
-                  "unknown"
-                ]
-              },
-              "match_confidence": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 1,
-                "description": "Deterministic relative relevance hint based on token coverage and rank; not a probability or feature verification."
-              },
-              "match_basis": {
-                "type": "string",
-                "const": "catalog_relevance_token_coverage_v1"
-              },
-              "data_timestamp": {
-                "type": "string",
-                "format": "date-time",
-                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
-              },
-              "bestprice_url": {
-                "type": "string",
-                "format": "uri"
-              },
-              "image_url": {
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "format": "uri"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              }
-            },
-            "required": [
-              "product_id",
-              "title",
-              "brand",
-              "model",
-              "variant",
-              "category_id",
-              "category_title",
-              "price_from",
-              "offer_count",
-              "availability",
-              "match_confidence",
-              "match_basis",
-              "data_timestamp",
-              "bestprice_url",
-              "image_url"
-            ],
-            "additionalProperties": false
-          }
+            "$ref": "#/$defs/__schema10"
+          },
+          "description": "Grouped BestPrice products. For a barcode (GTIN) query the text search cannot find, at most the one grouped product that carries exactly that barcode, with a warning saying so; a barcode shared by several products returns none."
+        },
+        "category_handoff": {
+          "description": "Present only when products is empty because the matched category holds merchant offers but no grouped BestPrice product yet. url is the plain public category page, not a product landing link. These offers are not comparable products: they have no product_id for compare_offers or get_price_history.",
+          "$ref": "#/$defs/__schema12"
         }
       },
       "required": [
@@ -275,37 +108,25 @@
         "interpreted_query",
         "total_matches",
         "products"
-      ],
-      "additionalProperties": false
+      ]
     },
     {
       "type": "object",
       "properties": {
         "schema_version": {
-          "type": "string",
-          "const": "2.0"
+          "$ref": "#/$defs/__schema0"
         },
         "as_of": {
-          "type": "string",
-          "format": "date-time",
-          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          "$ref": "#/$defs/__schema1"
         },
         "currency": {
-          "type": "string",
-          "const": "EUR"
+          "$ref": "#/$defs/__schema2"
         },
         "locale": {
-          "type": "string",
-          "const": "el-GR"
+          "$ref": "#/$defs/__schema3"
         },
         "warnings": {
-          "maxItems": 20,
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 240
-          }
+          "$ref": "#/$defs/__schema4"
         },
         "error": {
           "type": "object",
@@ -327,8 +148,7 @@
             "code",
             "message",
             "retryable"
-          ],
-          "additionalProperties": false
+          ]
         }
       },
       "required": [
@@ -338,8 +158,263 @@
         "locale",
         "warnings",
         "error"
-      ],
-      "additionalProperties": false
+      ]
     }
-  ]
+  ],
+  "$defs": {
+    "__schema0": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*\\.[0-9]+$",
+      "description": "Result schema version. Currently 2.0; a later <major>.<minor> is returned without a tools/list change."
+    },
+    "__schema1": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+    },
+    "__schema2": {
+      "type": "string",
+      "const": "EUR"
+    },
+    "__schema3": {
+      "type": "string",
+      "const": "el-GR"
+    },
+    "__schema4": {
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/__schema5"
+      }
+    },
+    "__schema5": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "__schema6": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/__schema7"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "__schema7": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10000000
+    },
+    "__schema8": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50
+    },
+    "__schema9": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 400
+    },
+    "__schema10": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "pattern": "^bp_[0-9]{10}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 220
+        },
+        "brand": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 220
+        },
+        "variant": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "category_id": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "category_title": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "price_from": {
+          "description": "Catalog lowest listed item price in EUR before shipping. Same identity as compare_offers.catalog_price_from. Not a buyable quote; it may be a promoted, out-of-stock, or filtered offer that compare_offers omits. Never subtract this from another product compare_offers item_price.",
+          "$ref": "#/$defs/__schema6"
+        },
+        "offer_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "availability": {
+          "type": "string",
+          "enum": [
+            "available",
+            "unavailable",
+            "unknown"
+          ]
+        },
+        "match_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Deterministic relative relevance hint based on token coverage and rank; not a probability or feature verification."
+        },
+        "match_basis": {
+          "type": "string",
+          "maxLength": 100,
+          "pattern": "^[a-z][a-z0-9_]*_v[1-9][0-9]*$",
+          "description": "Relevance method behind match_confidence. Currently catalog_relevance_token_coverage_v1; a revised method is returned as a new <name>_v<N> id without a tools/list change."
+        },
+        "rating": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/__schema11"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "BestPrice shopper rating for this product: average of count first-party ratings. Null when the product has none."
+        },
+        "data_timestamp": {
+          "$ref": "#/$defs/__schema1"
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^d1\\.[a-f0-9]{32}\\.[A-Za-z0-9_-]{43}$",
+          "description": "Signed, anonymous id joining this recommendation to its BestPrice landing and outbound-click telemetry."
+        },
+        "bestprice_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "image_url": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "product_id",
+        "title",
+        "brand",
+        "model",
+        "variant",
+        "category_id",
+        "category_title",
+        "price_from",
+        "offer_count",
+        "availability",
+        "match_confidence",
+        "match_basis",
+        "rating",
+        "data_timestamp",
+        "decision_id",
+        "bestprice_url",
+        "image_url"
+      ]
+    },
+    "__schema11": {
+      "type": "object",
+      "properties": {
+        "average": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "count": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "average",
+        "count"
+      ]
+    },
+    "__schema12": {
+      "type": "object",
+      "properties": {
+        "category_id": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "listing_count": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991,
+          "description": "Ungrouped merchant offers BestPrice showed in this category for the search, within any price bounds."
+        }
+      },
+      "required": [
+        "category_id",
+        "title",
+        "url",
+        "listing_count"
+      ]
+    }
+  }
 }

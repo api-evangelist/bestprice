@@ -5,8 +5,8 @@
     "query": {
       "type": "string",
       "minLength": 2,
-      "maxLength": 200,
-      "description": "Product name, model, category, or natural-language shopping need. Greek and English are accepted."
+      "maxLength": 400,
+      "description": "Product name, model, barcode (GTIN/EAN), or category in Greek or English. A pasted merchant listing title is accepted; the search reduces it to the model it names. Use get_shopping_decision with the original request for recommendations based on needs, household size, or suitability; catalog search does not verify those requirements."
     },
     "locale": {
       "default": "el-GR",

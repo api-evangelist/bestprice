@@ -4,24 +4,17 @@
   "properties": {
     "product_id": {
       "type": "string",
+      "pattern": "^bp_[0-9]{10}$",
       "description": "Exact grouped BestPrice product id returned by search_products, in bp_<id> form."
     },
     "period_days": {
       "default": 180,
-      "description": "Requested history window in days. Use 180 for the strongest price context unless the user asks otherwise.",
-      "anyOf": [
-        {
-          "type": "number",
-          "const": 30
-        },
-        {
-          "type": "number",
-          "const": 90
-        },
-        {
-          "type": "number",
-          "const": 180
-        }
+      "description": "Requested history window in days for series and data_gaps. deal_classification and price_delta_vs_180d_median_pct always compare with the 180-day median; window_stats always carries the 30-, 90- and 180-day statistics. Use 180 unless the user asks otherwise.",
+      "type": "number",
+      "enum": [
+        30,
+        90,
+        180
       ]
     }
   },

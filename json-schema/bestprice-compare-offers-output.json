@@ -6,261 +6,43 @@
       "type": "object",
       "properties": {
         "schema_version": {
-          "type": "string",
-          "const": "2.0"
+          "$ref": "#/$defs/__schema0"
         },
         "as_of": {
-          "type": "string",
-          "format": "date-time",
-          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          "$ref": "#/$defs/__schema1"
         },
         "currency": {
-          "type": "string",
-          "const": "EUR"
+          "$ref": "#/$defs/__schema2"
         },
         "locale": {
-          "type": "string",
-          "const": "el-GR"
+          "$ref": "#/$defs/__schema3"
         },
         "warnings": {
-          "maxItems": 20,
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 240
-          }
+          "$ref": "#/$defs/__schema4"
         },
         "product": {
-          "type": "object",
-          "properties": {
-            "product_id": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 220
-            },
-            "brand": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 80
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "model": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 220
-            },
-            "variant": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 180
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "bestprice_url": {
-              "type": "string",
-              "format": "uri"
-            }
-          },
-          "required": [
-            "product_id",
-            "title",
-            "brand",
-            "model",
-            "variant",
-            "bestprice_url"
-          ],
-          "additionalProperties": false
+          "$ref": "#/$defs/__schema6"
         },
         "postal_code": {
-          "type": "string",
-          "pattern": "^[0-9]{5}$"
+          "$ref": "#/$defs/__schema7"
         },
         "objective": {
-          "type": "string",
-          "enum": [
-            "lowest_total_cost",
-            "lowest_item_price",
-            "merchant_rating"
-          ]
+          "$ref": "#/$defs/__schema8"
+        },
+        "catalog_price_from": {
+          "$ref": "#/$defs/__schema9"
+        },
+        "quoted_lowest_item_price": {
+          "$ref": "#/$defs/__schema12"
+        },
+        "quoted_lowest_total_price": {
+          "$ref": "#/$defs/__schema13"
+        },
+        "catalog_min_unquoted_reason": {
+          "$ref": "#/$defs/__schema14"
         },
         "offers": {
-          "maxItems": 10,
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "offer_id": {
-                "type": "string",
-                "pattern": "^bp_offer_[0-9]+$"
-              },
-              "merchant_id": {
-                "type": "string",
-                "pattern": "^bp_merchant_[0-9]+$"
-              },
-              "merchant_name": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 100,
-                "description": "Sanitized public BestPrice store name."
-              },
-              "merchant_rating": {
-                "anyOf": [
-                  {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 5
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "merchant_rating_count": {
-                "anyOf": [
-                  {
-                    "type": "integer",
-                    "minimum": 0,
-                    "maximum": 9007199254740991
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "verified_merchant": {
-                "type": "boolean",
-                "description": "True when this is a BestPrice-certified store (Πιστοποιημένο κατάστημα)."
-              },
-              "offer_title": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 220
-              },
-              "variant": {
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 180
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "item_price": {
-                "type": "number",
-                "minimum": 0,
-                "maximum": 10000000,
-                "description": "Current item price in EUR before shipping."
-              },
-              "shipping_price": {
-                "anyOf": [
-                  {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 10000000
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Known or estimated shipping price in EUR; null means unknown."
-              },
-              "shipping_status": {
-                "type": "string",
-                "enum": [
-                  "known",
-                  "estimated",
-                  "unknown"
-                ]
-              },
-              "total_price": {
-                "anyOf": [
-                  {
-                    "type": "number",
-                    "minimum": 0,
-                    "maximum": 10000000
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Delivered total in EUR; null whenever shipping is unknown."
-              },
-              "availability": {
-                "type": "string",
-                "enum": [
-                  "in_stock",
-                  "delivery_1_3_days",
-                  "delivery_4_7_days",
-                  "delivery_4_10_days",
-                  "delivery_8_14_days",
-                  "by_order",
-                  "to_order",
-                  "preorder",
-                  "out_of_stock",
-                  "unknown"
-                ]
-              },
-              "delivery_estimate": {
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 80
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              },
-              "ranking_reason": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 100
-              },
-              "price_checked_at": {
-                "type": "string",
-                "format": "date-time",
-                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
-              }
-            },
-            "required": [
-              "offer_id",
-              "merchant_id",
-              "merchant_name",
-              "merchant_rating",
-              "merchant_rating_count",
-              "verified_merchant",
-              "offer_title",
-              "variant",
-              "item_price",
-              "shipping_price",
-              "shipping_status",
-              "total_price",
-              "availability",
-              "delivery_estimate",
-              "ranking_reason",
-              "price_checked_at"
-            ],
-            "additionalProperties": false
-          }
+          "$ref": "#/$defs/__schema15"
         }
       },
       "required": [
@@ -272,38 +54,30 @@
         "product",
         "postal_code",
         "objective",
+        "catalog_price_from",
+        "quoted_lowest_item_price",
+        "quoted_lowest_total_price",
+        "catalog_min_unquoted_reason",
         "offers"
-      ],
-      "additionalProperties": false
+      ]
     },
     {
       "type": "object",
       "properties": {
         "schema_version": {
-          "type": "string",
-          "const": "2.0"
+          "$ref": "#/$defs/__schema0"
         },
         "as_of": {
-          "type": "string",
-          "format": "date-time",
-          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+          "$ref": "#/$defs/__schema1"
         },
         "currency": {
-          "type": "string",
-          "const": "EUR"
+          "$ref": "#/$defs/__schema2"
         },
         "locale": {
-          "type": "string",
-          "const": "el-GR"
+          "$ref": "#/$defs/__schema3"
         },
         "warnings": {
-          "maxItems": 20,
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 240
-          }
+          "$ref": "#/$defs/__schema4"
         },
         "error": {
           "type": "object",
@@ -325,8 +99,7 @@
             "code",
             "message",
             "retryable"
-          ],
-          "additionalProperties": false
+          ]
         }
       },
       "required": [
@@ -336,8 +109,364 @@
         "locale",
         "warnings",
         "error"
-      ],
-      "additionalProperties": false
+      ]
     }
-  ]
+  ],
+  "$defs": {
+    "__schema0": {
+      "type": "string",
+      "pattern": "^[1-9][0-9]*\\.[0-9]+$",
+      "description": "Result schema version. Currently 2.0; a later <major>.<minor> is returned without a tools/list change."
+    },
+    "__schema1": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+    },
+    "__schema2": {
+      "type": "string",
+      "const": "EUR"
+    },
+    "__schema3": {
+      "type": "string",
+      "const": "el-GR"
+    },
+    "__schema4": {
+      "maxItems": 20,
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/__schema5"
+      }
+    },
+    "__schema5": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240
+    },
+    "__schema6": {
+      "type": "object",
+      "properties": {
+        "product_id": {
+          "type": "string",
+          "pattern": "^bp_[0-9]{10}$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 220
+        },
+        "brand": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 220
+        },
+        "variant": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 180
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "decision_id": {
+          "type": "string",
+          "pattern": "^d1\\.[a-f0-9]{32}\\.[A-Za-z0-9_-]{43}$",
+          "description": "Signed, anonymous id joining this recommendation to its BestPrice landing and outbound-click telemetry."
+        },
+        "bestprice_url": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "product_id",
+        "title",
+        "brand",
+        "model",
+        "variant",
+        "decision_id",
+        "bestprice_url"
+      ]
+    },
+    "__schema7": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^(?:[1-7][0-9]{4}|8[0-5][0-9]{3})$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "__schema8": {
+      "type": "string",
+      "enum": [
+        "lowest_total_cost",
+        "lowest_item_price",
+        "merchant_rating"
+      ],
+      "description": "The ranking actually applied, including the one resolved when the request omitted objective."
+    },
+    "__schema9": {
+      "description": "Catalog lowest listed item price in EUR before shipping. Same identity as search_products.price_from. Not a buyable quote.",
+      "$ref": "#/$defs/__schema11"
+    },
+    "__schema10": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10000000
+    },
+    "__schema11": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/__schema10"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "__schema12": {
+      "description": "Lowest item_price among the returned offers after public filters. Use this, not catalog_price_from, as a quoted item price.",
+      "$ref": "#/$defs/__schema11"
+    },
+    "__schema13": {
+      "description": "Lowest delivered total among returned offers with known shipping; null when none are known.",
+      "$ref": "#/$defs/__schema11"
+    },
+    "__schema14": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 100,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "Why catalog_price_from is absent from the returned page. Null when the catalog min is quoted or the page is cheaper. Known values: promoted, not_in_stock, missing_merchant, filtered, not_on_page, omitted_from_offer_list, no_catalog_price. New values are added without a tools/list change."
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "__schema15": {
+      "maxItems": 10,
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/__schema16"
+      }
+    },
+    "__schema16": {
+      "type": "object",
+      "properties": {
+        "offer_id": {
+          "type": "string",
+          "pattern": "^bp_offer_[0-9]+$"
+        },
+        "merchant_id": {
+          "type": "string",
+          "pattern": "^bp_merchant_[0-9]+$"
+        },
+        "merchant_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Sanitized public BestPrice store name."
+        },
+        "merchant_logo_url": {
+          "description": "BestPrice CDN logo of the store; null when the store has none.",
+          "$ref": "#/$defs/__schema17"
+        },
+        "merchant_rating": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 5
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "merchant_rating_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verified_merchant": {
+          "type": "boolean",
+          "description": "True when this is a BestPrice-certified store (Πιστοποιημένο κατάστημα)."
+        },
+        "certification_level": {
+          "description": "BestPrice certification tier of the store (php/classes/Merchant.php verification_level 1..4); null when not certified.",
+          "$ref": "#/$defs/__schema18"
+        },
+        "offer_title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 220
+        },
+        "variant": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 180
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "item_price": {
+          "description": "Current item price in EUR before shipping.",
+          "$ref": "#/$defs/__schema10"
+        },
+        "shipping_price": {
+          "description": "Known or estimated shipping price in EUR; null means unknown.",
+          "$ref": "#/$defs/__schema11"
+        },
+        "shipping_status": {
+          "type": "string",
+          "enum": [
+            "known",
+            "estimated",
+            "unknown"
+          ]
+        },
+        "shipping_unknown_cause": {
+          "description": "Why shipping is unknown: missing when the store published no usable shipping cost, invalid when it published one this service refuses to trust. Null whenever shipping_status is known or estimated.",
+          "$ref": "#/$defs/__schema19"
+        },
+        "total_price": {
+          "description": "Delivered total in EUR; null whenever shipping is unknown.",
+          "$ref": "#/$defs/__schema11"
+        },
+        "availability": {
+          "type": "string",
+          "maxLength": 100,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "Offer availability; treat an unrecognized value as unknown. Known values: in_stock, delivery_1_3_days, delivery_4_7_days, delivery_4_10_days, delivery_8_14_days, by_order, to_order, preorder, out_of_stock, unknown. New values are added without a tools/list change."
+        },
+        "condition": {
+          "type": "string",
+          "maxLength": 100,
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "Item condition; treat an unrecognized value as unknown. Known values: new, refurbished, used, open_box, unknown. New values are added without a tools/list change."
+        },
+        "bundle_status": {
+          "type": "string",
+          "enum": [
+            "single",
+            "bundle",
+            "unknown"
+          ]
+        },
+        "delivery_estimate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ranking_reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "price_checked_at": {
+          "$ref": "#/$defs/__schema1"
+        }
+      },
+      "required": [
+        "offer_id",
+        "merchant_id",
+        "merchant_name",
+        "merchant_rating",
+        "merchant_rating_count",
+        "verified_merchant",
+        "offer_title",
+        "variant",
+        "item_price",
+        "shipping_price",
+        "shipping_status",
+        "total_price",
+        "availability",
+        "condition",
+        "bundle_status",
+        "delivery_estimate",
+        "ranking_reason",
+        "price_checked_at"
+      ]
+    },
+    "__schema17": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "__schema18": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "bronze",
+            "silver",
+            "gold",
+            "platinum"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "__schema19": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "missing",
+            "invalid"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
 }

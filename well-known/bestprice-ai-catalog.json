@@ -10,7 +10,7 @@
             "identifier": "urn:air:bestprice.gr:mcp:shopping",
             "type": "application/mcp-server-card+json",
             "displayName": "BestPrice Shopping",
-            "description": "Read-only product search, offer comparison, and price history for the Greek market.",
+            "description": "Read-only shopping decisions, product search, offers, and price history for Greece.",
             "url": "https://mcp.bestprice.gr/mcp/server-card",
             "tags": [
                 "shopping",
@@ -18,8 +18,8 @@
                 "greece",
                 "read-only"
             ],
-            "version": "1.5.1",
-            "updatedAt": "2026-08-27T00:00:00Z",
+            "version": "1.8.1",
+            "updatedAt": "2026-09-24T00:00:00Z",
             "publisher": {
                 "identifier": "https://www.bestprice.gr",
                 "displayName": "BestPrice.gr"
@@ -28,16 +28,59 @@
                 "https://www.bestprice.gr/mcp#discovery": {
                     "context": "https://agenticresourcediscovery.org/context/v1",
                     "capabilities": [
+                        "ShoppingDecision",
+                        "ProductRecommendation",
                         "ProductSearch",
                         "OfferComparison",
+                        "DeliveredPrice",
                         "PriceHistory"
                     ],
                     "representativeQueries": [
-                        "Search BestPrice.gr for Apple iPhone 16 128GB offers in Greece",
-                        "Find a laptop under €800 in the BestPrice.gr catalogue",
-                        "Compare the delivered total price of a BestPrice product to postal code 11527",
-                        "Show the 180-day price history for a BestPrice product",
-                        "Βρες προϊόντα και σύγκρινε τιμές καταστημάτων στο BestPrice.gr"
+                        "What is the best phone under €500 in Greece with a good camera, NFC, and 5G?",
+                        "Which Greek store has the lowest delivered price for Sony WH-1000XM5 to postcode 11527?",
+                        "Is €799 a good price for this TV compared with the last six months?",
+                        "Ποιο laptop να πάρω έως 700€ για σχολή με τουλάχιστον 16GB RAM;",
+                        "Πού θα βρω αυτό το προϊόν φθηνότερα μαζί με τα μεταφορικά;"
+                    ]
+                }
+            }
+        },
+        {
+            "identifier": "urn:air:github.com:TheBestCo:bestprice-mcp:bestprice-shopping",
+            "type": "application/ai-skill",
+            "displayName": "BestPrice Shopping Skill",
+            "description": "Routing guidance for using BestPrice Shopping for product recommendations, Greek merchant offers, delivered totals, and price history.",
+            "url": "https://github.com/TheBestCo/bestprice-mcp/blob/main/skills/bestprice-shopping/SKILL.md",
+            "tags": [
+                "shopping",
+                "product-recommendations",
+                "price-comparison",
+                "delivered-price",
+                "greece",
+                "skill"
+            ],
+            "updatedAt": "2026-09-24T00:00:00Z",
+            "publisher": {
+                "identifier": "https://www.bestprice.gr",
+                "displayName": "BestPrice.gr"
+            },
+            "extensions": {
+                "https://www.bestprice.gr/mcp#discovery": {
+                    "context": "https://agenticresourcediscovery.org/context/v1",
+                    "capabilities": [
+                        "ShoppingDecision",
+                        "ProductRecommendation",
+                        "ProductSearch",
+                        "OfferComparison",
+                        "DeliveredPrice",
+                        "PriceHistory"
+                    ],
+                    "representativeQueries": [
+                        "What is the best phone under €500 in Greece with a good camera, NFC, and 5G?",
+                        "Which Greek store has the lowest delivered price for Sony WH-1000XM5 to postcode 11527?",
+                        "Is €799 a good price for this TV compared with the last six months?",
+                        "Ποιο laptop να πάρω έως 700€ για σχολή με τουλάχιστον 16GB RAM;",
+                        "Πού θα βρω αυτό το προϊόν φθηνότερα μαζί με τα μεταφορικά;"
                     ]
                 }
             }

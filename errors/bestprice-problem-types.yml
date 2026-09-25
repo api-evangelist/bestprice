@@ -1,14 +1,14 @@
-generated: '2026-08-27'
+generated: '2026-09-25'
 method: derived
-source: DERIVED from the outputSchema anyOf error branch published by all three tools in the live
-  tools/list response at https://mcp.bestprice.gr/mcp (saved verbatim to ../mcp/bestprice-tools.json),
-  plus two deliberate malformed tools/call requests made on 2026-08-27 to observe the real envelope.
-format: mcp-tool-result
+source: DERIVED from the outputSchema anyOf error branch published by all four tools in the live tools/list response
+  at https://mcp.bestprice.gr/mcp (saved verbatim to ../mcp/bestprice-tools.json), plus two deliberate malformed
+  tools/call requests made on 2026-08-27 to observe the real envelope. Re-read 2026-09-25 against the live 1.8.1
+  tools/list (four tools; get_shopping_decision carries the same error branch) and the README Protocol details section.
+format: custom
 rfc9457: false
-note: >-
-  This is an MCP surface, so there is no HTTP status-code error catalogue to derive: every call —
-  success, validation failure and tool failure alike — returns HTTP 200 with a text/event-stream
-  JSON-RPC body. Errors surface in two distinct places and a consuming agent must handle both.
+note: 'This is an MCP surface, so there is no HTTP status-code error catalogue to derive: every call — success,
+  validation failure and tool failure alike — returns HTTP 200 with a text/event-stream JSON-RPC body. Errors surface
+  in two distinct places and a consuming agent must handle both.'
 envelopes:
 - name: protocol-level
   shape: 'JSON-RPC 2.0 error object: {jsonrpc, id, error:{code, message}}'
@@ -22,42 +22,114 @@ envelopes:
   shape: '{result:{content:[{type:text, text:"Input validation error: ..."}], isError:true}}'
   observed: true
   http_status: 200
-  note: >-
-    Returned when arguments fail the tool inputSchema. The message names each offending field and the
-    constraint it broke. isError=true is the machine-readable signal; the text is prose.
+  note: Returned when arguments fail the tool inputSchema. The message names each offending field and the constraint
+    it broke. isError=true is the machine-readable signal; the text is prose.
 - name: tool-domain-error
   shape: '{schema_version, as_of, currency, locale, warnings[], error:{code, message, retryable}}'
   observed: false
-  declared_in: tool outputSchema anyOf branch 2 (all three tools)
+  declared_in: tool outputSchema anyOf branch 2 (all four tools)
   fields:
-  - {name: code, type: string, pattern: '^[A-Z][A-Z0-9_]{2,63}$', required: true}
-  - {name: message, type: string, max_length: 240, required: true}
-  - {name: retryable, type: boolean, required: true}
-  note: >-
-    The contract declares this branch but does NOT enumerate the code values, so the specific codes
-    an agent may see are unknown from the published schema. No domain error was produced during this
-    pass. `retryable` is the field to branch on — it is the only machine-readable retry signal the
-    surface offers, since there is no Retry-After header and no 429.
+  - name: code
+    type: string
+    pattern: ^[A-Z][A-Z0-9_]{2,63}$
+    required: true
+  - name: message
+    type: string
+    max_length: 240
+    required: true
+  - name: retryable
+    type: boolean
+    required: true
+  note: The contract declares this branch but does NOT enumerate the code values, so the specific codes an agent
+    may see are unknown from the published schema. No domain error was produced during this pass. `retryable` is
+    the field to branch on — it is the only machine-readable retry signal the surface offers, alongside the transport-level
+    429 / -32029 / Retry-After the README now documents for rate limiting.
 observed_validation_errors:
 - tool: get_price_history
-  arguments: {product_id: 'bp_000000000 (well-formed prefix, wrong shape)'}
+  arguments:
+    product_id: bp_000000000 (well-formed prefix, wrong shape)
   isError: true
-  message: 'Input validation error: Invalid arguments for tool get_price_history: product_id: Expected
-    a grouped BestPrice product id (bp_<id>)'
+  message: 'Input validation error: Invalid arguments for tool get_price_history: product_id: Expected a grouped
+    BestPrice product id (bp_<id>)'
 - tool: compare_offers
-  arguments: {product_id: nope, postal_code: '1'}
+  arguments:
+    product_id: nope
+    postal_code: '1'
   isError: true
-  message: 'Input validation error: Invalid arguments for tool compare_offers: product_id: Expected a
-    grouped BestPrice product id (bp_<id>), postal_code: Invalid string: must match pattern /^[0-9]{5}$/u'
+  message: 'Input validation error: Invalid arguments for tool compare_offers: product_id: Expected a grouped BestPrice
+    product id (bp_<id>), postal_code: Invalid string: must match pattern /^[0-9]{5}$/u'
 partial_success:
   mechanism: warnings[]
-  note: >-
-    Successful responses carry a warnings[] array (max 20 entries, 240 chars each) used for
-    non-fatal caveats — e.g. that price_from excludes shipping, or that duplicate merchant listings
-    were consolidated. An agent that ignores warnings[] will report prices that are technically
-    correct and practically wrong.
+  note: Successful responses carry a warnings[] array (max 20 entries, 240 chars each) used for non-fatal caveats
+    — e.g. that price_from excludes shipping, or that duplicate merchant listings were consolidated. An agent that
+    ignores warnings[] will report prices that are technically correct and practically wrong.
 null_as_signal:
   field: total_price
-  note: >-
-    compare_offers returns total_price = null with shipping_status != "known" rather than assuming
-    zero shipping. Treating that null as 0 is the single most expensive misread of this API.
+  note: compare_offers returns total_price = null with shipping_status != "known" rather than assuming zero shipping.
+    Treating that null as 0 is the single most expensive misread of this API.
+protocol_errors:
+- status: 429
+  title: Rate limited
+  jsonrpc_code: -32029
+  description: per-client rate limits answered with HTTP 429, JSON-RPC error -32029 and a Retry-After header
+  remediation: Wait for Retry-After, then retry.
+  source: https://github.com/TheBestCo/bestprice-mcp#protocol-details
+- status: 413
+  title: Request body too large
+  description: JSON request bodies up to 256 KiB (413 above that)
+  remediation: Shorten the request (history, message).
+  source: https://github.com/TheBestCo/bestprice-mcp#protocol-details
+- status: 400
+  title: Batch refused
+  description: JSON-RPC batch arrays are refused with 400
+  remediation: Send one JSON-RPC request per POST.
+  source: https://github.com/TheBestCo/bestprice-mcp#protocol-details
+- status: 403
+  title: Origin not allowed
+  description: A browser page from a non-allowlisted origin gets 403; clients that send no Origin are unaffected.
+  remediation: Call from a server-side client or an allowlisted AI-host origin.
+  source: https://github.com/TheBestCo/bestprice-mcp#protocol-details
+- status: 200
+  title: Unknown tool
+  jsonrpc_code: -32602
+  description: 'An unknown tool is a JSON-RPC error (-32602). Invalid arguments and service failures are tool results
+    with isError: true.'
+  remediation: Use a tool name from tools/list.
+  source: https://github.com/TheBestCo/bestprice-mcp#protocol-details
+format_detail: mcp-tool-result
+problems:
+- status: 429
+  title: Rate limited
+  description: per-client rate limits answered with HTTP 429, JSON-RPC error -32029 and a Retry-After header
+  remediation: Wait for Retry-After, then retry.
+  jsonrpc_code: -32029
+- status: 413
+  title: Request body too large
+  description: JSON request bodies up to 256 KiB (413 above that)
+  remediation: Shorten the request (history, message).
+- status: 400
+  title: Batch refused
+  description: JSON-RPC batch arrays are refused with 400
+  remediation: Send one JSON-RPC request per POST.
+- status: 403
+  title: Origin not allowed
+  description: A browser page from a non-allowlisted origin gets 403; clients that send no Origin are unaffected.
+  remediation: Call from a server-side client or an allowlisted AI-host origin.
+- status: 200
+  title: Unknown tool
+  description: 'An unknown tool is a JSON-RPC error (-32602). Invalid arguments and service failures are tool results
+    with isError: true.'
+  remediation: Use a tool name from tools/list.
+  jsonrpc_code: -32602
+- status: 200
+  title: Tool input validation error
+  type: isError tool result
+  description: 'Invalid arguments are returned as a tool result with isError: true naming each offending field (observed
+    live 2026-08-27).'
+  remediation: Correct the named field and call again.
+- status: 200
+  title: Tool domain error
+  type: outputSchema error branch {error:{code,message,retryable}}
+  description: 'Service failures such as an unknown product are tool results with isError: true, declared by all
+    four tools; codes are not enumerated in the schema.'
+  remediation: Branch on error.retryable.

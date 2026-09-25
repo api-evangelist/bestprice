@@ -1,18 +1,25 @@
-generated: '2026-08-27'
-method: probed
-source: https://www.bestprice.gr/mcp (connection guide, tool limits and FAQ),
-  https://github.com/TheBestCo/bestprice-mcp/blob/main/PROVIDER_SETUP.md, and the response headers
-  observed on live anonymous tools/call requests to https://mcp.bestprice.gr/mcp on 2026-08-27.
-docs: https://www.bestprice.gr/mcp
-limit_count: 0
-note: >-
-  BestPrice publishes no request-rate limit for the public MCP endpoint, and none was observable.
-  Live responses carried only x-request-id, cache-control: no-cache, no-transform and
-  x-accel-buffering: no — no RateLimit-*, X-RateLimit-* or Retry-After header appeared on any of the
-  five successful calls made during this pass, and no 429 was produced. What the provider DOES
-  publish are per-call result caps, recorded below as result_limits; they bound the size of a
-  response, not the number of requests, and should not be read as a rate limit.
-limits: []
+generated: '2026-09-25'
+method: searched
+source: https://raw.githubusercontent.com/TheBestCo/bestprice-mcp/main/README.md
+docs: https://github.com/TheBestCo/bestprice-mcp#protocol-details
+limit_count: 1
+note: 'Updated 2026-09-25. The provider README (Protocol details, "Measured against the live endpoint on 24 September
+  2026") now documents per-client rate limiting and how exhaustion is signalled: HTTP 429, JSON-RPC error -32029
+  and a Retry-After header. It publishes no number or window, so limit/window are left unset rather than guessed.
+  It also documents a 256 KiB request-body cap (413) and a 12-second request deadline, recorded under request_limits
+  because they bound a request, not a rate. The 2026-08-27 pass (source: https://www.bestprice.gr/mcp (connection
+  guide, tool limits and FAQ), https://github.com/TheBestCo/bestprice-mcp/blob/main/PROVIDER_SETUP.md, and the response
+  headers observed on live anonymous tools/call requests to https://mcp.bestprice.gr/mcp on 2026-08-27.) observed
+  no rate-limit headers and no 429 in five anonymous calls; that observation is kept under x-evidence.'
+limits:
+- name: Per-client rate limit
+  scope: per-client
+  limit_text: per-client rate limits answered with HTTP `429`, JSON-RPC error `-32029` and a `Retry-After` header
+  status_on_exhaustion: 429
+  jsonrpc_error: -32029
+  headers:
+  - Retry-After
+  endpoint: https://mcp.bestprice.gr/mcp
 observed_headers:
   present:
   - x-request-id
@@ -20,8 +27,8 @@ observed_headers:
   - x-accel-buffering
   - content-type
   rate_limit_headers: []
-  retry_after: false
-  status_on_exhaustion: unknown
+  retry_after: documented (README 2026-09-24); not observed in 2026-08-27 calls
+  status_on_exhaustion: 429
 result_limits:
 - tool: search_products
   parameter: limit
@@ -37,14 +44,40 @@ result_limits:
   unit: merchant offers per call
 - tool: get_price_history
   parameter: period_days
-  allowed: [30, 90, 180]
+  allowed:
+  - 30
+  - 90
+  - 180
   default: 180
   unit: days of daily-minimum history per call
+- tool: get_shopping_decision
+  parameter: history
+  max: 12
+  unit: recent conversation turns per call
 input_bounds:
-- {tool: search_products, field: query, min_length: 2, max_length: 200}
-- {tool: search_products, field: required_features, max_items: 10}
-- {tool: compare_offers, field: product_id, pattern: '^bp_<id>$ (grouped BestPrice product id)'}
-- {tool: compare_offers, field: postal_code, pattern: '^[0-9]{5}$'}
+- tool: search_products
+  field: query
+  min_length: 2
+  max_length: 400
+  note: live 1.8.1 schema; README table says 2-200
+- tool: search_products
+  field: required_features
+  max_items: 10
+- tool: compare_offers
+  field: product_id
+  pattern: ^bp_[0-9]{10}$
+- tool: compare_offers
+  field: postal_code
+  pattern: ^(?:[1-7][0-9]{4}|8[0-5][0-9]{3})$
+  required: false
+- tool: get_shopping_decision
+  field: message
+  min_length: 1
+  max_length: 2000
+- tool: get_shopping_decision
+  field: postal_code
+  pattern: ^(?:[1-7][0-9]{4}|8[0-5][0-9]{3})$
+  note: required for a completed basket plan
 x-evidence:
   fetched: '2026-08-27'
   url: https://mcp.bestprice.gr/mcp
@@ -52,3 +85,13 @@ x-evidence:
   calls_made: 5
   rate_limit_headers_seen: 0
   http_429_seen: 0
+name: BestPrice Shopping MCP rate limits
+request_limits:
+- name: Request body size
+  limit_text: JSON request bodies up to 256 KiB (`413` above that)
+  status_on_exceed: 413
+- name: Request deadline
+  limit_text: a 12-second request deadline
+- name: Batch requests
+  limit_text: JSON-RPC batch arrays are refused with `400`
+  status: 400

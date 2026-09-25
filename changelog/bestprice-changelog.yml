@@ -1,53 +1,248 @@
-generated: '2026-08-27'
+generated: '2026-09-25'
 method: searched
-source: GitHub Releases API for https://github.com/TheBestCo/bestprice-mcp, read 2026-08-27 (HTTP 200),
-  plus the in-band version fields on the hosted service.
-docs: https://github.com/TheBestCo/bestprice-mcp/releases
+source: https://github.com/TheBestCo/bestprice-mcp/blob/main/CHANGELOG.md (Keep a Changelog, read 2026-09-25, HTTP
+  200), the GitHub Releases API for TheBestCo/bestprice-mcp, the official MCP Registry version line for gr.bestprice/mcp,
+  and in-band serverInfo.version from https://mcp.bestprice.gr/mcp.
+docs: https://github.com/TheBestCo/bestprice-mcp/blob/main/CHANGELOG.md
 scheme: semver
-note: >-
-  There are TWO version lines and they are not the same thing. The hosted MCP service reports 1.5.1
-  in-band and publishes no changelog at all — SECURITY.md says only the current production version is
-  supported. The dated releases below belong to the client-extension repository, which ships
-  connection manifests rather than server code, and its numbering (1.0.1) is independent of the
-  service's (1.5.1). A consumer watching the GitHub releases is NOT watching the service change.
+note: There are TWO version lines. The hosted MCP service reports 1.8.1 in-band (registry-published 2026-09-24)
+  and still publishes no prose changelog of its own; the README records hosted-service checks separately (docs/releases/2026-09-07-brain-v12.md).
+  Since the 2026-08-27 profile the repository has added a Keep a Changelog CHANGELOG.md for its PACKAGE version
+  (manifests, stdio bridge, WebMCP layer), now 1.4.3 — entries[] below are that file, recent window, highlights
+  quoted from it. No entry is marked breaking by the provider; 1.2.0 carries a Removed section that removed repository-internal
+  submission notes, not API surface.
 service:
   name: BestPrice Shopping MCP
-  current_version: 1.5.1
+  current_version: 1.8.1
   changelog_published: false
-  release_notes_published: false
-  note: >-
-    No prose changelog exists for the hosted service, but the official MCP Registry does carry a
-    dated version LINE for it, recorded below. It gives a consumer version numbers and publish dates
-    and nothing else — no statement of what changed between 1.2.0 and 1.5.1, and no breaking-change
-    flag. Better than nothing, and materially less than release notes.
+  release_notes_published: partial
+  note: The 1.1.0 package entry (2026-08-31) records get_shopping_decision joining the published tool set; the registry
+    shows server 1.8.0 on 2026-08-31 and 1.8.1 on 2026-09-24.
 registry_versions:
   registry: https://registry.modelcontextprotocol.io
   name: gr.bestprice/mcp
-  read: '2026-08-27'
+  read: '2026-09-25'
   status: active
   entries:
-  - {version: 1.5.1, published: '2026-08-27', is_latest: true}
-  - {version: 1.5.0, published: '2026-08-26', is_latest: false}
-  - {version: 1.4.0, published: '2026-08-26', is_latest: false}
-  - {version: 1.3.0, published: '2026-08-26', is_latest: false}
-  - {version: 1.2.0, published: '2026-08-26', is_latest: false}
+  - version: 1.8.1
+    published: '2026-09-24'
+    is_latest: true
+  - version: 1.8.0
+    published: '2026-08-31'
+    is_latest: false
+  - version: 1.6.1
+    published: '2026-08-28'
+    is_latest: false
+  - version: 1.6.0
+    published: '2026-08-28'
+    is_latest: false
+  - version: 1.5.1
+    published: '2026-08-27'
+    is_latest: false
+  - version: 1.5.0
+    published: '2026-08-26'
+    is_latest: false
+  - version: 1.4.0
+    published: '2026-08-26'
+    is_latest: false
+  - version: 1.3.0
+    published: '2026-08-26'
+    is_latest: false
+  - version: 1.2.0
+    published: '2026-08-26'
+    is_latest: false
   publisher_workflow: https://github.com/TheBestCo/bestprice-mcp/blob/main/.github/workflows/publish-mcp-registry.yml
 repository_releases:
-  current_version: 1.0.1
-  entries:
-  - version: v1.0.1
-    date: '2026-08-26'
-    name: BestPrice MCP extension 1.0.1
-    breaking: false
-    scope: client extension manifests
-  - version: v1.0.0
-    date: '2026-08-26'
-    name: BestPrice MCP extension 1.0.0
-    breaking: false
-    scope: client extension manifests
-    note: Initial public release of the extension repository.
+  current_version: 1.4.3
+  latest_tags:
+  - v1.4.3
+  - v1.4.2
+  - v1.4.1
+  - v1.4.0
+  - v1.3.0
+  - v1.2.8
+  - v1.2.7
+  - v1.2.6
+  note: GitHub releases v1.2.6-v1.4.3 published 2026-09-24/25.
 x-evidence:
+- url: https://raw.githubusercontent.com/TheBestCo/bestprice-mcp/main/CHANGELOG.md
+  status: 200
 - url: https://api.github.com/repos/TheBestCo/bestprice-mcp/releases
   status: 200
 - url: https://registry.modelcontextprotocol.io/v0/servers?search=gr.bestprice
   status: 200
+current_version: 1.8.1
+entries:
+- version: 1.4.3
+  date: '2026-09-25'
+  breaking: false
+  highlights:
+  - WebMCP contract 1.9 at the storefront's registration revision 2026-09-25.9 (bestprice.gr `2401b434d2`). The
+    contract version, the 16 tools and every input are unchanged.
+  - 'Lean output schemas. Every tool''s published output schema is the storefront''s lean projection of its strict
+    contract: types, consts, enums, patterns, required fields and the success/refusal `oneOf` kept; bounds, formats,
+    `additionalProperties` and non-essential descriptions dropped; objects nested two levels deep published as their
+    type; refusals as `ok`/`error`/`reason` (search and details in full). About half the size; the package publishes
+    them exactly as the storefront does.'
+  - Strictness kept in the tests. The snapshot also records the storefront's strict contract (`webmcp/test/fixtures/storefront-strict-output-schemas.json`,
+    from the same module the published schemas come from); every demo result is validated against both, and the
+    parity test checks that each published schema only relaxes the strict one.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.4.2
+  date: '2026-09-25'
+  breaking: false
+  highlights:
+  - WebMCP contract 1.9 as the storefront revised it again (bestprice.gr `21bce127ae`; registration revision 2026-09-25.8).
+    The contract version and the 16 tools are unchanged.
+  - '`get_product_details` is on the item page too: the product page registers 9 tools, the details tool right after
+    `search_bestprice`, with its own wording there (`pageDescriptions.product`).'
+  - 'Tools answer before the tab moves. Every tool that moves or reloads the tab answers first — `outcome: ''dispatched''`,
+    `destination_url` or `bestprice_url`, and the `next_tools` the destination registers — and the navigation starts
+    just after. `search_bestprice` says `results_kind: ''product''` when a search lands on one model''s own page;
+    `get_product_details` answers within its deadline with the sections it could read (the rest `null`, with why),
+    still opens the product with `navigate: true` when the read failed, and summarizes an excluded unknown-shipping
+    offer as `cheapest_merchant`. The output schemas are leaner.'
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.4.1
+  date: '2026-09-25'
+  breaking: false
+  highlights:
+  - WebMCP contract 1.9 as the storefront revised it the same day (bestprice.gr `971aa25d79`, `b550a849e8`; registration
+    revision 2026-09-25.7). The contract version and the 16 tools are unchanged.
+  - '`search_bestprice` narrows by price, stock, deals and order: optional `min_price_eur`, `max_price_eur`, `sort`
+    (`relevance`, `price_asc`, `price_desc`, `biggest_price_drop`, `most_stores`, `newest`), `in_stock_only` and
+    `deals_only`; the result reports each requested constraint as `applied` or `not_applied`, with why.'
+  - 'One product id form everywhere, digits only (`^\d{1,20}$`): `compare_page_offers`, `get_product_details` and
+    `open_visible_product` share one schema, and the MCP server''s `bp_<id>` is refused with the digits to send.'
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.4.0
+  date: '2026-09-25'
+  breaking: false
+  highlights:
+  - WebMCP contract 1.9, as the BestPrice.gr storefront registers it (bestprice.gr `b43f47d55b`, after `867fcffe5a`).
+  - '`get_product_details` — 16 tools. On the home page, listings and every other public page (not the item page,
+    whose own tools cover the product in view), it reads one product by `product_id` — numeric, or `bp_<id>` — without
+    moving the tab: its facts, up to four offers ranked by delivered price, key specifications and the price-history
+    summary; `include` picks the sections. It is read-only.'
+  - 'The `site` page type. Every other public BestPrice page — articles and guides, deals, lists, stores, brands,
+    collections, comparisons, stories — registers `search_bestprice`, `get_product_details` and `get_shopping_decision`.
+    `PAGE_TOOL_NAMES.site` and `createTools({ page: ''site'' })` publish it; the home page now registers 5 tools
+    and listings 10.'
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.3.0
+  date: '2026-09-25'
+  breaking: false
+  highlights:
+  - WebMCP contract 1.8, as the BestPrice.gr storefront registers it (bestprice.gr `e0be10690f`).
+  - '`get_shopping_decision` on every page — 15 tools. It asks the BestPrice Shopping Brain (the public MCP endpoint''s
+    tool of the same name) with the shopper''s own words (`message`, 1–2000 characters) and an optional Greek `postal_code`
+    (10000–85999), and returns the outcome, the pick with its lowest price before shipping and BestPrice link, up
+    to three alternatives, reasons, tradeoffs, unknowns, and a clarifying question when one is needed. It is read-only
+    and never moves the tab.'
+  - '`search_bestprice` answers with its results. New optional `limit` (1–8, default 6) and `navigate` (default
+    true; `false` only reads); the result carries the product cards, the results page and its kind, whether the
+    tab moved, and the tools the results page registers.'
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.2.8
+  date: '2026-09-25'
+  breaking: false
+  highlights:
+  - 'The stdio bridge connects again on Node 24, 25 and 26. Since 1.2.1, `node stdio.mjs` failed every handshake
+    on current Node (undici 7.12 and later): the MCP SDK cancels the empty body of the 202 that answers `notifications/initialized`,
+    and the UTF-8 response guard reported that cancellation as an upstream stream failure, which aborted the shared
+    upstream connection before `tools/list`. Hosts saw the fallback `bestprice-mcp-stdio` server and "This operation
+    was aborted" on every call. A body the consumer discards is no longer a failure; invalid UTF-8, oversize and
+    truncated bodies, and real read errors, are still reported exactly once. Node 20 to 23 were unaffected.'
+  - CI now also runs the full test suite on the current Node line (26), so a runtime change like undici 7.12 cannot
+    break the bridge unnoticed again.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.2.7
+  date: '2026-09-24'
+  breaking: false
+  highlights:
+  - CI-pinned GitHub Agent Finder contribution metadata for the canonical BestPrice Shopping Skill.
+  - CI-pinned Docker MCP Registry remote-server payload with Streamable HTTP, no authentication, and no copied tool
+    inventory.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.2.6
+  date: '2026-09-24'
+  breaking: false
+  highlights:
+  - '`.agents/skills/bestprice-shopping/SKILL.md` mirrors the canonical shopping Skill for agent-compatible repository
+    scanners.'
+  - '`opencode.json` auto-connects the public BestPrice remote MCP in OpenCode without copying any tool logic.'
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.2.5
+  date: '2026-09-24'
+  breaking: false
+  highlights:
+  - Native self-hosted marketplace manifests for GitHub Copilot CLI and Claude Code, both resolving `bestprice-shopping`
+    to the repository root so they reuse the canonical Agent Plugin, MCP configuration, and Skill.
+  - A checked-in `lhm.plugin.json` describes the hosted four-tool, three-resource BestPrice MCP surface for LobeHub
+    Marketplace submission without relying on crawler inference.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.2.4
+  date: '2026-09-24'
+  breaking: false
+  highlights:
+  - OpenAI portable install-surface metadata under `extensions.com.openai`, with the same reviewed interface as
+    the Codex compatibility manifest.
+  - The Codex compatibility manifest now points explicitly at the canonical `./skills/` directory.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.2.3
+  date: '2026-09-24'
+  breaking: false
+  highlights:
+  - A provider-neutral `skills/bestprice-shopping/SKILL.md` routes unbranded Greek shopping intent to the four reviewed
+    MCP tools and is shared with Cursor.
+  - Claude plugin metadata packages the existing remote MCP and the same shopping Skill.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.2.2
+  date: '2026-09-21'
+  breaking: false
+  highlights:
+  - Keep the stdio protocol alive when a host closes its diagnostic stderr pipe, including during startup. Diagnostic
+    failures no longer crash unrelated protocol work.
+  - Route broken stdout through the existing bounded shutdown and upstream session cleanup. Preserve a nonzero exit
+    status even when cleanup does not resolve before Node exits.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.2.1
+  date: '2026-09-21'
+  breaking: false
+  highlights:
+  - 'The item page''s seventh WebMCP tool, `show_offer`: it scrolls the shopper''s own tab to one offer the page
+    already renders, marks it for four seconds, and never returns or opens a merchant URL. The surface is now 14
+    contextual contracts, live on production since 2026-09-11, and the natural-language dataset gains a 47-case
+    v2 that carries every frozen v1 case unchanged.'
+  - Timestamped Shopping Brain v12 production verification with the full serving revision, sanitized canary results,
+    and explicit limits on what was tested.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.2.0
+  date: '2026-09-07'
+  breaking: false
+  highlights:
+  - The stdio entry point is now a full MCP bridge built on the official SDK client. It forwards the remote server's
+    identity, instructions, and capabilities at initialize, keeps the remote session, relays resources and prompts
+    as well as tools, propagates upstream errors instead of returning an empty tool list, and accepts `BESTPRICE_MCP_URL`
+    and `BESTPRICE_MCP_TIMEOUT_MS`.
+  - Docker image pins Node 22, runs as the `node` user, and no longer falls back to an unlocked `npm install`.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.1.0
+  date: '2026-08-31'
+  breaking: false
+  highlights:
+  - '`get_shopping_decision` joins the published tool set in every manifest and guide.'
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.0.1
+  date: '2026-08-26'
+  breaking: false
+  highlights:
+  - DeepSeek Harness connection example.
+  scope: repository package (manifests, stdio bridge, WebMCP)
+- version: 1.0.0
+  date: '2026-08-26'
+  breaking: false
+  highlights:
+  - 'Initial public release: Gemini CLI and Qwen Code extensions, Codex plugin, Agent Plugin manifests, official
+    MCP Registry metadata, provider setup guide, and the WebMCP contracts, runtime, and evaluator.'
+  scope: repository package (manifests, stdio bridge, WebMCP)

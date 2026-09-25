@@ -4,16 +4,16 @@
   "properties": {
     "product_id": {
       "type": "string",
+      "pattern": "^bp_[0-9]{10}$",
       "description": "Exact grouped BestPrice product id returned by search_products, in bp_<id> form."
     },
     "postal_code": {
+      "description": "Greek delivery postcode (five digits, 10000 to 85999) used to calculate shipping and total cost. Required for lowest_total_cost; optional for lowest_item_price and merchant_rating.",
       "type": "string",
-      "pattern": "^[0-9]{5}$",
-      "description": "Five-digit Greek delivery postal code used to calculate shipping and total cost."
+      "pattern": "^(?:[1-7][0-9]{4}|8[0-5][0-9]{3})$"
     },
     "objective": {
-      "default": "lowest_total_cost",
-      "description": "How to rank offers. Prefer lowest_total_cost because it includes known shipping.",
+      "description": "How to rank offers. When omitted: lowest_total_cost if postal_code is given, otherwise lowest_item_price. lowest_total_cost includes known shipping and requires postal_code.",
       "type": "string",
       "enum": [
         "lowest_total_cost",
@@ -22,8 +22,8 @@
       ]
     },
     "in_stock_only": {
-      "default": true,
-      "description": "When true, omit offers that are not currently available.",
+      "default": false,
+      "description": "false (default): every buyable offer, both immediately available and those that ship later with a delivery estimate (availability unknown stays marked unknown). true: only offers immediately available from stock. Out-of-stock offers are never returned.",
       "type": "boolean"
     },
     "minimum_merchant_rating": {
@@ -42,8 +42,7 @@
     }
   },
   "required": [
-    "product_id",
-    "postal_code"
+    "product_id"
   ],
   "additionalProperties": false
 }
