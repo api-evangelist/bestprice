@@ -74,6 +74,8 @@ maintainers:
   email: feedback@bestprice.gr
   url: https://www.bestprice.gr/contact
 common:
+- type: Pricing
+  url: https://www.bestprice.gr/en/mcp
 - type: Hosts
   url: hosts/bestprice-hosts.yml
 - type: SDKs
