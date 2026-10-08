@@ -38,3 +38,16 @@ source_note: https://www.bestprice.gr/mcp — the connection guide and FAQ state
   no BestPrice account and no BestPrice API key; corroborated by https://github.com/TheBestCo/bestprice-mcp README
   ("The public service is read-only and does not require a BestPrice account or API key") and by a live anonymous
   call on 2026-08-27.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units: []
+  plans:
+  - name: Public endpoint
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
