@@ -1,5 +1,5 @@
 generated: '2026-10-12'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/bestprice/integrations
 - https://zapier.com/apps/bestprice-agent-commerce/integrations
@@ -10,9 +10,41 @@ checked:
 - https://composio.dev/toolkits/bestprice
 - https://monid.ai/tools/bestprice
 - https://n8n.io/integrations/bestprice/
+- https://registry.modelcontextprotocol.io/v0/servers
 - https://zapier.com/apps/bestprice-agent-commerce/integrations
 - https://zapier.com/apps/bestprice/integrations
 summary: null
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: MCP Registry
+  partner: mcp
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://registry.modelcontextprotocol.io/v0/servers?search=gr.bestprice
+  contract_reference:
+    register: registry.modelcontextprotocol.io
+    spec_file: null
+    role: mcp-server-listing
+    registered_name: gr.bestprice/mcp
+    register_id: gr.bestprice/mcp
+    detected_by: sweep-agent-tools.py
+    detected: '2026-10-14'
+  mcp_registry:
+    servers:
+    - gr.bestprice/mcp
+    hosted_remote: 1
+    local_package: 0
+    transports:
+      streamable-http: 1
+    auth_declared: 0
+    catalog_declared: true
+    namespace_domains:
+    - bestprice.gr
+  matched_by:
+  - namespace-domain
+  detected_by: sweep-agent-tools.py
+  first_seen: '2026-10-14'
 templates: []
