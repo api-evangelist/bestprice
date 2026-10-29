@@ -1,4 +1,4 @@
-# BestPrice
+# BestPrice Agent Commerce
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,13 +64,125 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-BestPrice.gr — Greek shopping comparison, profiled by [API Evangelist](https://apievangelist.com)
-and listed on [APIs.io](https://apis.io).
+BestPrice.gr is Greece's largest price-comparison marketplace, run by The Best Company S.A., covering roughly 25.7 million products from about 3,650 merchants and 42,000 manufacturers with hourly merchant-feed refreshes. Its developer surface is not a REST API but a public, keyless, read-only MCP server at https://mcp.bestprice.gr/mcp (server 1.8.1, MCP Registry id gr.bestprice/mcp), exposing four tools - get_shopping_decision (the BestPrice Shopping Brain: recommendations, need-based comparisons and read-only basket plans), search_products, compare_offers and get_price_history - whose JSON Schema 2020-12 input and output contracts are served live and anonymously. Alongside it BestPrice publishes a provider-authored Agent Skill, an APIs.json 0.23 index, an llms.txt, an RFC 9116 security.txt, an Agentic Resource Discovery manifest, an AI catalog, an MCP server card, a stdio bridge for hosts that cannot speak HTTP, and an experimental WebMCP manifest of 16 browser-tab tools.
 
-Submitted to the apis.io Add-API form on 2026-08-27 by feedback@bestprice.gr and
-**parked by the gate as `no_consumable_surface`** — a false negative. The gate's probe was
-served HTTP 403 by bot protection; with an ordinary browser user-agent the site answers 200
-and serves a complete, current **APIs.json 0.23** at `/apis.json`, declaring a live MCP
-server, an RFC 9727 API catalog, an llms.txt and a security.txt.
+**Areas:** Shopping · Price Comparison · E-Commerce · Retail · MCP · WebMCP · Agentic Commerce · Greece · Product Recommendations · Shopping Decisions · Delivered Price
 
-This record is seeded from that file — the provider's own, unedited.
+## BestPrice Agent Commerce on APIs.io
+
+Everything profiled for BestPrice Agent Commerce is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/bestprice/](https://apis.io/providers/bestprice/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [BestPrice Shopping MCP](https://apis.io/apis/bestprice/shopping-mcp/) — Read-only shopping tools for product recommendations and shopping decisions, grouped-product search, current Greek merchant offers and delivered totals, and…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [BestPrice Shopping](https://apis.io/servers/bestprice/bestprice-agent-commerce/)
+
+#### JSON Schema (8)
+
+The data models the API reads and writes.
+
+- [Bestprice Compare Offers Input](https://apis.io/schemas/bestprice/bestprice-compare-offers-input/)
+- [Bestprice Compare Offers Output](https://apis.io/schemas/bestprice/bestprice-compare-offers-output/)
+- [Bestprice Get Price History Input](https://apis.io/schemas/bestprice/bestprice-get-price-history-input/)
+- [Bestprice Get Price History Output](https://apis.io/schemas/bestprice/bestprice-get-price-history-output/)
+- [Bestprice Get Shopping Decision Input](https://apis.io/schemas/bestprice/bestprice-get-shopping-decision-input/)
+- [Bestprice Get Shopping Decision Output](https://apis.io/schemas/bestprice/bestprice-get-shopping-decision-output/)
+- [Bestprice Search Products Input](https://apis.io/schemas/bestprice/bestprice-search-products-input/)
+- [Bestprice Search Products Output](https://apis.io/schemas/bestprice/bestprice-search-products-output/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Bestprice Authentication](https://apis.io/security/bestprice/bestprice-authentication/)
+- [Bestprice Domain Security](https://apis.io/security/bestprice/bestprice-domain-security/)
+- [Bestprice Vulnerability Disclosure](https://apis.io/security/bestprice/bestprice-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Bestprice Plans Pricing](https://apis.io/plans/bestprice/bestprice-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Bestprice Rate Limits](https://apis.io/rate-limits/bestprice/bestprice-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://bestprice.gr)
+- [Documentation](https://www.bestprice.gr/mcp)
+- [Pricing](https://www.bestprice.gr/en/mcp)
+- [Support](https://www.bestprice.gr/contact)
+- [Blog](https://www.bestprice.gr/stories)
+- [Terms of service](https://www.bestprice.gr/policies/terms)
+- [Privacy policy](https://www.bestprice.gr/policies/privacy)
+- [GitHub](https://github.com/TheBestCo)
+
+## API Evangelist rating
+
+**Kin Score 47.2** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 91.7 |
+| Contract quality | 12.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 52.6 |
+| Developer ergonomics | 66.1 |
+| Access clarity | 52.6 |
+
+**Agent readiness 10.1** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 30.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/bestprice/](https://apis.io/providers/bestprice/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for BestPrice Agent Commerce: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/bestprice/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
